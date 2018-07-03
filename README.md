@@ -5,6 +5,6 @@ Wraps over [khash.h](https://github.com/attractivechaos/klib/blob/master/khash.h
 
 ## Usage
 
-Documentation WIP.
+Check out the documentation at [wilsonl.in/docs/nicehash](https://wilsonl.in/docs/nicehash/).
 
-Check out the [test](src/test/c) sources for a few examples.
+You can also see some examples in the [`test`](src/test/c) directory.
