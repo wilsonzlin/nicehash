@@ -10,7 +10,7 @@
   \
   void name##_add(name##_t t, type_t elem) { \
     int absent; \
-    khint_t bucket = kh_put(name, t, elem, &absent); \
+    kh_put(name, t, elem, &absent); \
   }
 
 #endif // _HDR_NICEHASH_COMMON_SET
