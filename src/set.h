@@ -1,11 +1,11 @@
 #pragma once
 
-#include "./base.h"
+#include "./hash.h"
 
 #define NH_SET(khcode, name, type_t) \
   KHASH_SET_INIT_##khcode(name) \
   \
-  NH_BASE(name, type_t) \
+  NH_HASH_BASE(name, type_t) \
   \
   void name##_add(name##_t t, type_t elem) { \
     int absent; \

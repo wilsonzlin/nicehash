@@ -1,11 +1,11 @@
 #pragma once
 
-#include "./base.h"
+#include "./hash.h"
 
 #define NH_MAP(khcode, name, key_t, value_t) \
   KHASH_MAP_INIT_##khcode(name, value_t) \
   \
-  NH_BASE(name, key_t) \
+  NH_HASH_BASE(name, key_t) \
   \
   value_t name##_get(name##_t t, key_t k, value_t defval) { \
     khint_t bucket = kh_get(name, t, k); \
