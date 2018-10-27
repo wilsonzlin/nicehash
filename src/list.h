@@ -3,6 +3,7 @@
 #include <stddef.h>
 #include <stdlib.h>
 #include <stdbool.h>
+#include <string.h>
 
 #define INITIAL_LIST_SIDE_SIZE 10
 #define LIST_GROWTH_RATE 1.5
@@ -199,7 +200,7 @@
     return f;                                                                                     \
   }                                                                                               \
                                                                                                   \
-  void name##_unshift(name##_t buf, elem_type head)                                               \
+  void name##_prepend(name##_t buf, elem_type head)                                               \
   {                                                                                               \
     if (buf->head == 0)                                                                           \
     {                                                                                             \
@@ -231,7 +232,7 @@
     return l;                                                                                     \
   }                                                                                               \
                                                                                                   \
-  bool name##_compare(name##_t a, name##_t b);                                                    \
+  int name##_compare(name##_t a, name##_t b);                                                     \
                                                                                                   \
   bool name##_equal(name##_t a, name##_t b)                                                       \
   {                                                                                               \
