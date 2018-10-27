@@ -1,7 +1,7 @@
 #pragma once
 
 #include <stdbool.h>
-#include "../khash.h"
+#include "../lib/khash.h"
 
 #define NH_BASE(name, key_t) \
   typedef khash_t(name) * name##_t; \
@@ -24,9 +24,9 @@
     khint_t bucket = kh_get(name, t, elem); \
     if (bucket != kh_end(t)) { \
       kh_del(name, t, bucket); \
-      return TRUE; \
+      return true; \
     } \
-    return FALSE; \
+    return false; \
   } \
   \
   void name##_clear(name##_t t) { \

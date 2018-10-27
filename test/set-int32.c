@@ -1,33 +1,30 @@
 #include <stdio.h>
 #include "../src/set-int32.h"
+#include "./_common.c"
 
 int main(void) {
-  nh_set_int32_t set1 = nh_set_int32_create();
+  nh_set_int32_t set = nh_set_int32_create();
 
-  nh_set_int32_add(set1, 42);
-  printf("Added 42\n");
+  nh_set_int32_add(set, 42);
 
-  printf("Has 42: %d\n", nh_set_int32_has(set1, 42));
-  printf("Has 33: %d\n", nh_set_int32_has(set1, 33));
-  printf("Has 42: %d\n", nh_set_int32_has(set1, 42));
-  printf("Has 15: %d\n", nh_set_int32_has(set1, 15));
-  printf("Deleted 42: %d\n", nh_set_int32_delete(set1, 42));
-  printf("Deleted 15: %d\n", nh_set_int32_delete(set1, 15));
-  printf("Deleted 42: %d\n", nh_set_int32_delete(set1, 42));
-  printf("Has 42: %d\n", nh_set_int32_has(set1, 42));
+  expect(nh_set_int32_has(set, 42), "Has 42 initially");
+  expect_false(nh_set_int32_has(set, 33), "Has 33");
+  expect(nh_set_int32_has(set, 42), "Has 42 secondly");
+  expect_false(nh_set_int32_has(set, 15), "Has 15");
+  expect(nh_set_int32_delete(set, 42), "Deleted 42");
+  expect_false(nh_set_int32_delete(set, 15), "Deleted 15");
+  expect_false(nh_set_int32_delete(set, 42), "Deleted 42 secondly");
+  expect_false(nh_set_int32_has(set, 42), "Has 42 thirdly");
 
-  nh_set_int32_add(set1, 42);
-  printf("Added 42\n");
+  nh_set_int32_add(set, 42);
 
-  printf("Has 42: %d\n", nh_set_int32_has(set1, 42));
+  expect(nh_set_int32_has(set, 42), "Has 42 fourthly");
 
-  nh_set_int32_clear(set1);
-  printf("Cleared set 1\n");
+  nh_set_int32_clear(set);
 
-  printf("Has 42: %d\n", nh_set_int32_has(set1, 42));
+  expect_false(nh_set_int32_has(set, 42), "Has 42 after clearing");
 
-  nh_set_int32_add(set1, 42);
-  printf("Added 42\n");
+  nh_set_int32_add(set, 42);
 
-  printf("Has 42: %d\n", nh_set_int32_has(set1, 42));
+  expect(nh_set_int32_has(set, 42), "Has 42 fifthly");
 }

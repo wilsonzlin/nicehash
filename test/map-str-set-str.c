@@ -2,6 +2,7 @@
 #include <stdint.h>
 #include "../src/set-str.h"
 #include "../src/map-str.h"
+#include "./_common.c"
 
 NH_MAP_STR(set_str, nh_set_str_t)
 
@@ -20,9 +21,9 @@ int main(void) {
   nh_set_str_add(setB, "B.3");
   nh_map_str_set_str_set(map1, "B", setB);
 
-  printf("Has 'A': %d\n", nh_map_str_set_str_has(map1, "A"));
-  printf("Has 'B': %d\n", nh_map_str_set_str_has(map1, "B"));
-  printf("Has 'C': %d\n", nh_map_str_set_str_has(map1, "C"));
+  expect(nh_map_str_set_str_has(map1, "A"), "Has 'A'");
+  expect(nh_map_str_set_str_has(map1, "B"), "Has 'B'");
+  expect_false(nh_map_str_set_str_has(map1, "C"), "Has 'C'");
 
-  printf("Has 'A.1': %d\n", nh_set_str_has(nh_map_str_set_str_get(map1, "A", NULL), "A.1"));
+  expect(nh_set_str_has(nh_map_str_set_str_get(map1, "A", NULL), "A.1"), "Has 'A.1'");
 }
