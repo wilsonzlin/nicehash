@@ -1,6 +1,6 @@
 #pragma once
 
-#include "common.h"
+#include "./base.h"
 
 #define NH_SET(khcode, name, type_t) \
   KHASH_SET_INIT_##khcode(name) \

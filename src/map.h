@@ -1,6 +1,6 @@
 #pragma once
 
-#include "common.h"
+#include "./base.h"
 
 #define NH_MAP(khcode, name, key_t, value_t) \
   KHASH_MAP_INIT_##khcode(name, value_t) \

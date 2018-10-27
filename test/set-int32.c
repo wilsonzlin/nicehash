@@ -1,5 +1,5 @@
 #include <stdio.h>
-#include "../../../main/c/set/int32.h"
+#include "../src/set-int32.h"
 
 int main(void) {
   nh_set_int32_t set1 = nh_set_int32_create();

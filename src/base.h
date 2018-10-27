@@ -1,7 +1,7 @@
 #pragma once
 
 #include <stdbool.h>
-#include <khash.h>
+#include "../khash.h"
 
 #define NH_BASE(name, key_t) \
   typedef khash_t(name) * name##_t; \

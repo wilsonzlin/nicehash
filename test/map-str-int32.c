@@ -1,8 +1,8 @@
 #include <stdio.h>
 #include <stdint.h>
-#include "../../../main/c/map/str.h"
+#include "../src/map-str.h"
 
-NICEHASH_MAP_STR(int32, int32_t)
+NH_MAP_STR(int32, int32_t)
 
 int main(void) {
   nh_map_str_int32_t map1 = nh_map_str_int32_create();
