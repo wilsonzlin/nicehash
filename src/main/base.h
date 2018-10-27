@@ -1,9 +1,9 @@
-#ifndef _HDR_NICEHASH_COMMON_COMMON
-#define _HDR_NICEHASH_COMMON_COMMON
+#pragma once
 
-#include "../ext/khash.h"
+#include <stdbool.h>
+#include <khash.h>
 
-#define NICEHASH_CREATE_COMMON_INFRA(name, key_t) \
+#define NH_BASE(name, key_t) \
   typedef khash_t(name) * name##_t; \
   \
   name##_t name##_create(void) { \
@@ -15,18 +15,18 @@
     kh_destroy(name, t); \
   } \
   \
-  int name##_has(name##_t t, key_t elem) { \
+  bool name##_has(name##_t t, key_t elem) { \
     khint_t bucket = kh_get(name, t, elem); \
     return bucket != kh_end(t); \
   } \
   \
-  int name##_delete(name##_t t, key_t elem) { \
+  bool name##_delete(name##_t t, key_t elem) { \
     khint_t bucket = kh_get(name, t, elem); \
     if (bucket != kh_end(t)) { \
       kh_del(name, t, bucket); \
-      return 1; \
+      return TRUE; \
     } \
-    return 0; \
+    return FALSE; \
   } \
   \
   void name##_clear(name##_t t) { \
@@ -36,5 +36,3 @@
       } \
     } \
   }
-
-#endif // _HDR_NICEHASH_COMMON_COMMON
