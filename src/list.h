@@ -8,10 +8,10 @@
 #define INITIAL_LIST_SIDE_SIZE 10
 #define LIST_GROWTH_RATE 1.5
 
-#define NH_LIST(name, elem_type, elem_size, invsafe_elem_type, invalid_value)                     \
+#define NH_LIST(name, elem_t, elem_size, invsafe_elem_t, invalid_value)                           \
   typedef struct name##_s                                                                         \
   {                                                                                               \
-    elem_type *data;                                                                              \
+    elem_t *data;                                                                                 \
     size_t head;                                                                                  \
     size_t length;                                                                                \
     size_t size;                                                                                  \
@@ -19,7 +19,7 @@
     size_t size_right;                                                                            \
   } * name##_t;                                                                                   \
                                                                                                   \
-  name##_t name##_create_size(size_t initial_size_left, size_t initial_size_right)                \
+  name##_t name##_create_of_size(size_t initial_size_left, size_t initial_size_right)             \
   {                                                                                               \
     size_t initial_size = initial_size_left + initial_size_right;                                 \
     name##_t buf = malloc(sizeof(struct name##_s));                                               \
@@ -34,7 +34,7 @@
                                                                                                   \
   name##_t name##_create(void)                                                                    \
   {                                                                                               \
-    return name##_create_size(INITIAL_LIST_SIDE_SIZE, INITIAL_LIST_SIDE_SIZE);                    \
+    return name##_create_of_size(INITIAL_LIST_SIDE_SIZE, INITIAL_LIST_SIDE_SIZE);                 \
   }                                                                                               \
                                                                                                   \
   void name##_destroy(name##_t buf)                                                               \
@@ -48,14 +48,14 @@
     free(buf);                                                                                    \
   }                                                                                               \
                                                                                                   \
-  elem_type *name##_underlying(name##_t buf)                                                      \
+  elem_t *name##_underlying(name##_t buf)                                                         \
   {                                                                                               \
     return &((buf->data)[buf->head]);                                                             \
   }                                                                                               \
                                                                                                   \
-  elem_type *name##_underlying_copy(name##_t buf)                                                 \
+  elem_t *name##_underlying_copy(name##_t buf)                                                    \
   {                                                                                               \
-    elem_type *copy = calloc(buf->length + 1, elem_size);                                         \
+    elem_t *copy = calloc(buf->length + 1, elem_size);                                            \
     memcpy(copy, name##_underlying(buf), buf->length *elem_size);                                 \
     return copy;                                                                                  \
   }                                                                                               \
@@ -65,7 +65,7 @@
     return idx < buf->length;                                                                     \
   }                                                                                               \
                                                                                                   \
-  invsafe_elem_type name##_get(name##_t buf, size_t idx)                                          \
+  invsafe_elem_t name##_get(name##_t buf, size_t idx)                                             \
   {                                                                                               \
     if (!name##_valid_index(buf, idx))                                                            \
     {                                                                                             \
@@ -75,7 +75,25 @@
     return buf->data[buf->head + idx];                                                            \
   }                                                                                               \
                                                                                                   \
-  void name##_set(name##_t buf, size_t idx, elem_type c)                                          \
+  invsafe_elem_t name##_first(name##_t buf)                                                       \
+  {                                                                                               \
+                                                                                                  \
+    return name##_get(buf, 0);                                                                    \
+  }                                                                                               \
+                                                                                                  \
+  invsafe_elem_t name##_last(name##_t buf)                                                        \
+  {                                                                                               \
+                                                                                                  \
+    return name##_get(buf, buf->length);                                                          \
+  }                                                                                               \
+                                                                                                  \
+  bool name##_is_empty(name##_t buf)                                                              \
+  {                                                                                               \
+                                                                                                  \
+    return buf->length == 0;                                                                      \
+  }                                                                                               \
+                                                                                                  \
+  void name##_set(name##_t buf, size_t idx, elem_t c)                                             \
   {                                                                                               \
     if (!name##_valid_index(buf, idx))                                                            \
     {                                                                                             \
@@ -85,7 +103,16 @@
     buf->data[buf->head + idx] = c;                                                               \
   }                                                                                               \
                                                                                                   \
-  void name##_size_expand_left(name##_t buf, size_t new_size_left)                                \
+  void name##_clear(name##_t buf)                                                                 \
+  {                                                                                               \
+    for (size_t i = 0, i < buf->length; i++)                                                      \
+    {                                                                                             \
+      buf->data[buf->head + i] = 0;                                                               \
+    }                                                                                             \
+    buf->length = 0;                                                                              \
+  }                                                                                               \
+                                                                                                  \
+  static void name##_size_increase_left(name##_t buf, size_t new_size_left)                       \
   {                                                                                               \
     size_t old_size_left = buf->size_left;                                                        \
                                                                                                   \
@@ -98,7 +125,7 @@
                                                                                                   \
     size_t new_size = new_size_left + buf->size_right;                                            \
                                                                                                   \
-    elem_type *new_data = calloc(new_size, elem_size);                                            \
+    elem_t *new_data = calloc(new_size, elem_size);                                               \
     memcpy(&(new_data[diff_size_left]), buf->data, elem_size * buf->length);                      \
     free(buf->data);                                                                              \
                                                                                                   \
@@ -108,7 +135,7 @@
     buf->size_left = new_size_left;                                                               \
   }                                                                                               \
                                                                                                   \
-  void name##_size_expand_right(name##_t buf, size_t new_size_right)                              \
+  static void name##_size_increase_right(name##_t buf, size_t new_size_right)                     \
   {                                                                                               \
     size_t old_size = buf->size;                                                                  \
     size_t old_size_right = buf->size_right;                                                      \
@@ -120,7 +147,7 @@
                                                                                                   \
     size_t new_size = buf->size_left + new_size_right;                                            \
                                                                                                   \
-    elem_type *new_data = realloc(buf->data, elem_size * new_size);                               \
+    elem_t *new_data = realloc(buf->data, elem_size * new_size);                                  \
     for (size_t i = old_size; i < new_size; i++)                                                  \
     {                                                                                             \
       new_data[i] = 0;                                                                            \
@@ -131,27 +158,27 @@
     buf->size_right = new_size_right;                                                             \
   }                                                                                               \
                                                                                                   \
-  void name##_ensure_left(name##_t buf, size_t amount)                                            \
+  void name##_size_ensure_left(name##_t buf, size_t amount)                                       \
   {                                                                                               \
     size_t desired_size = amount + 1;                                                             \
                                                                                                   \
     if (buf->size_left < desired_size)                                                            \
     {                                                                                             \
-      name##_size_expand_left(buf, desired_size);                                                 \
+      name##_size_increase_left(buf, desired_size);                                               \
     }                                                                                             \
   }                                                                                               \
                                                                                                   \
-  void name##_ensure_right(name##_t buf, size_t amount)                                           \
+  void name##_size_ensure_right(name##_t buf, size_t amount)                                      \
   {                                                                                               \
     size_t desired_size = amount + 1;                                                             \
                                                                                                   \
     if (buf->size_right < desired_size)                                                           \
     {                                                                                             \
-      name##_size_expand_right(buf, desired_size);                                                \
+      name##_size_increase_right(buf, desired_size);                                              \
     }                                                                                             \
   }                                                                                               \
                                                                                                   \
-  void name##_append(name##_t buf, elem_type tail)                                                \
+  void name##_add_right(name##_t buf, elem_t tail)                                                \
   {                                                                                               \
     size_t next_idx = buf->head + buf->length;                                                    \
                                                                                                   \
@@ -160,39 +187,39 @@
       size_t old_size = buf->size_right;                                                          \
       size_t new_size = old_size * LIST_GROWTH_RATE + 1; /* +1 to always guarantee an increase */ \
                                                                                                   \
-      name##_size_expand_right(buf, new_size);                                                    \
+      name##_size_increase_right(buf, new_size);                                                  \
     }                                                                                             \
                                                                                                   \
     buf->data[next_idx] = tail;                                                                   \
     buf->length++;                                                                                \
   }                                                                                               \
                                                                                                   \
-  void name##_extend_arr(name##_t buf, elem_type *ext, size_t ext_len)                            \
+  void name##_add_all_right_arr(name##_t buf, elem_t *ext, size_t ext_len)                        \
   {                                                                                               \
-    name##_ensure_right(buf, buf->length + ext_len);                                              \
+    name##_size_ensure_right(buf, buf->length + ext_len);                                         \
     for (size_t i = 0; i < ext_len; i++)                                                          \
     {                                                                                             \
-      name##_append(buf, ext[i]);                                                                 \
+      name##_add_right(buf, ext[i]);                                                              \
     }                                                                                             \
   }                                                                                               \
                                                                                                   \
-  void name##_extend_buf(name##_t buf, name##_t ext)                                              \
+  void name##_add_all_right_buf(name##_t buf, name##_t ext)                                       \
   {                                                                                               \
-    name##_ensure_right(buf, buf->length + ext->length);                                          \
+    name##_size_ensure_right(buf, buf->length + ext->length);                                     \
     for (size_t i = 0; i < buf->length; i++)                                                      \
     {                                                                                             \
-      name##_append(buf, buf->data[i]);                                                           \
+      name##_add_right(buf, buf->data[i]);                                                        \
     }                                                                                             \
   }                                                                                               \
                                                                                                   \
-  invsafe_elem_type name##_shift(name##_t buf)                                                    \
+  invsafe_elem_t name##_remove_left(name##_t buf)                                                 \
   {                                                                                               \
     if (buf->length == 0)                                                                         \
     {                                                                                             \
       return invalid_value;                                                                       \
     }                                                                                             \
                                                                                                   \
-    elem_type f = buf->data[buf->head];                                                           \
+    elem_t f = buf->data[buf->head];                                                              \
     buf->data[buf->head] = 0;                                                                     \
     buf->head++;                                                                                  \
     buf->length--;                                                                                \
@@ -200,14 +227,14 @@
     return f;                                                                                     \
   }                                                                                               \
                                                                                                   \
-  void name##_prepend(name##_t buf, elem_type head)                                               \
+  void name##_add_left(name##_t buf, elem_t head)                                                 \
   {                                                                                               \
     if (buf->head == 0)                                                                           \
     {                                                                                             \
       size_t old_size = buf->size_left;                                                           \
       size_t new_size = old_size * LIST_GROWTH_RATE + 1; /* +1 to always guarantee an increase */ \
                                                                                                   \
-      name##_size_expand_left(buf, new_size);                                                     \
+      name##_size_increase_left(buf, new_size);                                                   \
     }                                                                                             \
                                                                                                   \
     buf->head--;                                                                                  \
@@ -215,7 +242,7 @@
     buf->length++;                                                                                \
   }                                                                                               \
                                                                                                   \
-  invsafe_elem_type name##_pop(name##_t buf)                                                      \
+  invsafe_elem_t name##_remove_right(name##_t buf)                                                \
   {                                                                                               \
     if (buf->length == 0)                                                                         \
     {                                                                                             \
@@ -224,7 +251,7 @@
                                                                                                   \
     size_t idx = buf->head + buf->length - 1;                                                     \
                                                                                                   \
-    elem_type l = buf->data[idx];                                                                 \
+    elem_t l = buf->data[idx];                                                                    \
                                                                                                   \
     buf->data[idx] = 0;                                                                           \
     buf->length--;                                                                                \
