@@ -2,12 +2,12 @@
 
 #include "./hash.h"
 
-#define NH_MAP(khcode, name, key_t, value_t, defsafe_elem_t, default_value) \
+#define NH_MAP(khcode, name, key_t, value_t, defsafe_value_t, default_value) \
   KHASH_MAP_INIT_##khcode(name, value_t) \
   \
   NH_HASH_BASE(name, key_t) \
   \
-  defsafe_elem_t name##_get(name##_t t, key_t k) { \
+  defsafe_value_t name##_get(name##_t t, key_t k) { \
     khint_t bucket = kh_get(name, t, k); \
     if (bucket == kh_end(t)) return default_value; \
     \

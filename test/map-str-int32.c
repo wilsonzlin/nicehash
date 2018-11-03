@@ -3,7 +3,7 @@
 #include "../src/map-str.h"
 #include "./_common.c"
 
-NH_MAP_STR(int32, int32_t)
+NH_MAP_STR(int32, int32_t, int32_t, -1)
 
 int main(void) {
   nh_map_str_int32_t map1 = nh_map_str_int32_create();
@@ -12,13 +12,13 @@ int main(void) {
 
   expect(nh_map_str_int32_has(map1, "existing"), "Has 'existing'");
   expect_false(nh_map_str_int32_has(map1, "unknown"), "Has 'unknown'");
-  expect(nh_map_str_int32_get(map1, "existing", -1) == 100, "Get 'existing'");
-  expect(nh_map_str_int32_get(map1, "unknown", -1) == -1, "Get 'unknown'");
+  expect(nh_map_str_int32_get(map1, "existing") == 100, "Get 'existing'");
+  expect(nh_map_str_int32_get(map1, "unknown") == -1, "Get 'unknown'");
 
   nh_map_str_int32_set(map1, "existing", 420);
 
-  expect(nh_map_str_int32_get(map1, "existing", -1) == 420, "Get 'existing'");
+  expect(nh_map_str_int32_get(map1, "existing") == 420, "Get 'existing'");
   expect(nh_map_str_int32_delete(map1, "existing"), "Delete 'existing'");
   expect_false(nh_map_str_int32_delete(map1, "existing"), "Delete 'existing'");
-  expect(nh_map_str_int32_get(map1, "existing", -1) == -1, "Get 'existing'");
+  expect(nh_map_str_int32_get(map1, "existing") == -1, "Get 'existing'");
 }

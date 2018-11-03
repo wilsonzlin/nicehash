@@ -105,7 +105,7 @@
                                                                                                   \
   void name##_clear(name##_t buf)                                                                 \
   {                                                                                               \
-    for (size_t i = 0, i < buf->length; i++)                                                      \
+    for (size_t i = 0; i < buf->length; i++)                                                      \
     {                                                                                             \
       buf->data[buf->head + i] = 0;                                                               \
     }                                                                                             \

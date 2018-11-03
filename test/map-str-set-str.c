@@ -4,7 +4,7 @@
 #include "../src/map-str.h"
 #include "./_common.c"
 
-NH_MAP_STR(set_str, nh_set_str_t)
+NH_MAP_STR(set_str, nh_set_str_t, nh_set_str_t, NULL)
 
 int main(void) {
   nh_map_str_set_str_t map1 = nh_map_str_set_str_create();
@@ -25,5 +25,5 @@ int main(void) {
   expect(nh_map_str_set_str_has(map1, "B"), "Has 'B'");
   expect_false(nh_map_str_set_str_has(map1, "C"), "Has 'C'");
 
-  expect(nh_set_str_has(nh_map_str_set_str_get(map1, "A", NULL), "A.1"), "Has 'A.1'");
+  expect(nh_set_str_has(nh_map_str_set_str_get(map1, "A"), "A.1"), "Has 'A.1'");
 }
