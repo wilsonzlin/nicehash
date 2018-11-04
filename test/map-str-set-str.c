@@ -1,8 +1,8 @@
 #include <stdio.h>
 #include <stdint.h>
-#include "../src/set-str.h"
-#include "../src/map-str.h"
-#include "./_common.c"
+#include "set-str.h"
+#include "map-str.h"
+#include "./_common.h"
 
 NH_MAP_STR(set_str, nh_set_str_t, nh_set_str_t, NULL)
 

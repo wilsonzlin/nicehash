@@ -1,8 +1,8 @@
 #include <stdio.h>
 #include <stdint.h>
 #include <string.h>
-#include "../src/list-char.h"
-#include "./_common.c"
+#include "list-char.h"
+#include "./_common.h"
 
 int main(void) {
   nh_list_char_t list = nh_list_char_create();

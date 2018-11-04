@@ -1,6 +1,6 @@
 #include <stdio.h>
-#include "../src/set-str.h"
-#include "./_common.c"
+#include "set-str.h"
+#include "./_common.h"
 
 int main(void) {
   nh_set_str_t set = nh_set_str_create();

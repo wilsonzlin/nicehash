@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <stdint.h>
-#include "../src/map-str.h"
-#include "./_common.c"
+#include "map-str.h"
+#include "./_common.h"
 
 NH_MAP_STR(int32, int32_t, int32_t, -1)
 

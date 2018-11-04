@@ -1,6 +1,6 @@
 #include <stdio.h>
-#include "../src/set-int32.h"
-#include "./_common.c"
+#include "set-int32.h"
+#include "./_common.h"
 
 int main(void) {
   nh_set_int32_t set = nh_set_int32_create();
