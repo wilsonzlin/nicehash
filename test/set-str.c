@@ -3,7 +3,7 @@
 #include "./_common.h"
 
 int main(void) {
-  nh_set_str_t set = nh_set_str_create();
+  nh_set_str* set = nh_set_str_create();
 
   nh_set_str_add(set, "existing");
 

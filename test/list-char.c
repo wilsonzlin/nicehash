@@ -5,7 +5,7 @@
 #include "./_common.h"
 
 int main(void) {
-  nh_list_char_t list = nh_list_char_create();
+  nh_list_char* list = nh_list_char_create();
   nh_list_char_add_right(list, 'b');
   nh_list_char_add_left(list, 'a');
   expect(list->length == 2, "List of length 2");

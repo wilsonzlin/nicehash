@@ -4,18 +4,18 @@
 #include "map-str.h"
 #include "./_common.h"
 
-NH_MAP_STR(set_str, nh_set_str_t, nh_set_str_t, NULL)
+NH_MAP_STR(set_str, nh_set_str*, nh_set_str*, NULL)
 
 int main(void) {
-  nh_map_str_set_str_t map1 = nh_map_str_set_str_create();
+  nh_map_str_set_str* map1 = nh_map_str_set_str_create();
 
-  nh_set_str_t setA = nh_set_str_create();
+  nh_set_str* setA = nh_set_str_create();
   nh_set_str_add(setA, "A.1");
   nh_set_str_add(setA, "A.2");
   nh_set_str_add(setA, "A.3");
   nh_map_str_set_str_set(map1, "A", setA);
 
-  nh_set_str_t setB = nh_set_str_create();
+  nh_set_str* setB = nh_set_str_create();
   nh_set_str_add(setB, "B.1");
   nh_set_str_add(setB, "B.2");
   nh_set_str_add(setB, "B.3");

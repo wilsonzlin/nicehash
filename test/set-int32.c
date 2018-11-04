@@ -3,7 +3,7 @@
 #include "./_common.h"
 
 int main(void) {
-  nh_set_int32_t set = nh_set_int32_create();
+  nh_set_int32* set = nh_set_int32_create();
 
   nh_set_int32_add(set, 42);
 

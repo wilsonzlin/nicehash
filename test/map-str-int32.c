@@ -6,7 +6,7 @@
 NH_MAP_STR(int32, int32_t, int32_t, -1)
 
 int main(void) {
-  nh_map_str_int32_t map1 = nh_map_str_int32_create();
+  nh_map_str_int32* map1 = nh_map_str_int32_create();
 
   nh_map_str_int32_set(map1, "existing", 100);
 
