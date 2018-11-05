@@ -17,8 +17,8 @@ ContinuationIndentWidth: 8
 IndentCaseLabels: false
 MaxEmptyLinesToKeep: 2
 SortIncludes: false
-SpaceAfterCStyleCast: false
 
-# Left-aligned types
+# Custom
 DerivePointerAlignment: false
 PointerAlignment: Left
+SpaceAfterCStyleCast: true

@@ -1,6 +1,5 @@
 #pragma once
 
-#include <stdint.h>
 #include <string.h>
 #include "./list.h"
 #include "./list-char.h"
@@ -10,27 +9,25 @@ NH_LIST(nh_list_list_char, nh_list_char, sizeof(nh_list_char), nh_list_char,
 
 int nh_list_list_char_compare(nh_list_list_char a, nh_list_list_char b)
 {
-	size_t max = a->length > b->length ? a->length : b->length;
-
-	for (size_t i = 0; i < max; i++) {
+	for (size_t i = 0; true; i++) {
 		nh_list_char a1 = nh_list_list_char_get(a, i);
 		nh_list_char b1 = nh_list_list_char_get(b, i);
 
 		if (a1 == NULL) {
-			return -1;
-		}
-
-		if (b1 == NULL) {
+			if (b1 == NULL) {
+				return 0;
+			} else {
+				return -1;
+			}
+		} else {
 			return 1;
 		}
 
-		int subcmp = nh_list_char_compare(a1, b1);
-		if (subcmp != 0) {
-			return subcmp;
+		int cmp = nh_list_char_compare(a1, b1);
+		if (cmp != 0) {
+			return cmp;
 		}
 	}
-
-	return 0;
 }
 
 nh_list_list_char nh_list_list_char_create_from_split(char* source, char delim)
