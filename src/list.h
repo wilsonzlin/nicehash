@@ -190,7 +190,8 @@
 		buf->length++;                                                 \
 	}                                                                      \
                                                                                \
-	void name##_add_all_right_arr(name* buf, elem_t* ext, size_t ext_len)  \
+	void name##_add_all_right_array(name* buf, elem_t* ext,                \
+					size_t ext_len)                        \
 	{                                                                      \
 		name##_size_ensure_right(buf, buf->length + ext_len);          \
 		for (size_t i = 0; i < ext_len; i++) {                         \
@@ -198,7 +199,7 @@
 		}                                                              \
 	}                                                                      \
                                                                                \
-	void name##_add_all_right_buf(name* buf, name* ext)                    \
+	void name##_add_all_right_list(name* buf, name* ext)                   \
 	{                                                                      \
 		name##_size_ensure_right(buf, buf->length + ext->length);      \
 		for (size_t i = 0; i < buf->length; i++) {                     \
