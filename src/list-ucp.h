@@ -4,7 +4,7 @@
 #include <string.h>
 #include "./list.h"
 
-NH_LIST(nh_list_ucp, int32_t, sizeof(int32_t), int32_t, -1)
+NH_LIST(nh_list_ucp, int32_t, int32_t, -1)
 
 int nh_list_ucp_compare(nh_list_ucp* a, nh_list_ucp* b)
 {
