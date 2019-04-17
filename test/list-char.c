@@ -66,7 +66,8 @@ int main(void)
 
 	char* random_suffix = generate_random_data(1024);
 	nh_list_char* random_suffix_list = nh_list_char_create_of_size(0, 1);
-	nh_list_char_add_all_right_array(random_suffix_list, random_suffix, 1024);
+	nh_list_char_add_all_right_array(random_suffix_list, random_suffix,
+					 1024);
 	expect(nh_list_char_equal_array(random_suffix_list, random_suffix),
 	       "List contains random data");
 

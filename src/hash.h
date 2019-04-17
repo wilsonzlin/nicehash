@@ -3,7 +3,7 @@
 #include <stdbool.h>
 #include "../lib/khash.h"
 
-#define _NH_HASH_BASE_IMPL(name, key_t)                                              \
+#define _NH_HASH_BASE_IMPL(name, key_t)                                        \
 	typedef khash_t(name) name;                                            \
                                                                                \
 	name* name##_create(void)                                              \
