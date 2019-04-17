@@ -4,7 +4,7 @@
 
 #include <sys/random.h>
 
-#include "list-char.h"
+#include <list-char.h>
 #include "./_common.h"
 
 static char* generate_random_data(size_t bytes)

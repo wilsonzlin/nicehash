@@ -1,10 +1,10 @@
 #include <stdio.h>
 #include <stdint.h>
-#include "set-str.h"
-#include "map-str.h"
+#include <set-str.h>
+#include <map-str.h>
 #include "./_common.h"
 
-NH_MAP_STR(set_str, nh_set_str*, nh_set_str*, NULL)
+NH_MAP_STR_CUSTOM_NAMES(str, nh_set_str*, set_str)
 
 int main(void)
 {
