@@ -51,11 +51,19 @@ bool nh_view_str_equals_i(nh_view_str* view, nh_view_str* other)
 // Based on khash.h string hash function.
 int nh_view_str_hash(nh_view_str* view)
 {
-	if (nh_view_str_is_invalid(view))
-		return 0;
 	int hash = 0;
 	for (size_t i = view->start; i <= view->end; i++) {
 		hash = (hash << 5) - hash + (int) view->array[i];
+	}
+	return hash;
+}
+
+int nh_view_str_hash_i(nh_view_str* view)
+{
+	int hash = 0;
+	for (size_t i = view->start; i <= view->end; i++) {
+		hash = (hash << 5) - hash
+		       + (int) nh_util_lowercase(view->array[i]);
 	}
 	return hash;
 }

@@ -3,7 +3,7 @@
 #include <map-view-str.h>
 #include "./_common.h"
 
-NH_MAP_VIEW_STR_CUSTOM_NAMES_DEFAULT_VALUE(view_str, int32_t, int32, -1)
+NH_MAP_VIEW_STR(int32_t, int32, -1)
 
 int main(void)
 {

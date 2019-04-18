@@ -3,7 +3,7 @@
 #include <map-str.h>
 #include "./_common.h"
 
-NH_MAP_STR_CUSTOM_NAMES_DEFAULT_VALUE(str, int32_t, int32, -1)
+NH_MAP_STR(int32_t, int32, -1)
 
 int main(void)
 {
