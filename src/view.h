@@ -4,6 +4,7 @@
 #include <stddef.h>
 #include <stdbool.h>
 #include <string.h>
+#include "./util.h"
 
 #define _NH_VIEW_IMPL(name, elem_type)                                         \
 	typedef struct {                                                       \
@@ -71,9 +72,8 @@
 	int name##_compare_array(name* view, elem_type* other,                 \
 				 size_t other_length)                          \
 	{                                                                      \
-		int len_cmp = view->length < other_length                      \
-				      ? -1                                     \
-				      : view->length > other_length ? 1 : 0;   \
+		int len_cmp =                                                  \
+			nh_util_compare_integers(view->length, other_length);  \
 		if (len_cmp != 0) {                                            \
 			return len_cmp;                                        \
 		}                                                              \
