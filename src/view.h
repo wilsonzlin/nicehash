@@ -27,13 +27,19 @@
 				       : view->end + 1 - view->start;          \
 	}                                                                      \
                                                                                \
-	name* name##_create(elem_type* array, size_t start, size_t end)        \
+	void name##_init(name* view, elem_type* array, size_t start,           \
+			 size_t end)                                           \
 	{                                                                      \
-		name* view = malloc(sizeof(name));                             \
 		view->array = array;                                           \
 		view->start = start;                                           \
 		view->end = end;                                               \
 		name##_update_length(view);                                    \
+	}                                                                      \
+                                                                               \
+	name* name##_create(elem_type* array, size_t start, size_t end)        \
+	{                                                                      \
+		name* view = malloc(sizeof(name));                             \
+		name##_init(view, array, start, end);                          \
 		return view;                                                   \
 	}                                                                      \
                                                                                \
