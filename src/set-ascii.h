@@ -5,10 +5,18 @@
 #include <stdint.h>
 
 #define _NH_SET_ASCII_ELEM_STATS(set, elem)                                    \
-	if ((elem & 0x80) != 0)                                                \
+	if (elem != 0 && (elem & 0x80) != 0) {                                 \
 		return false;                                                  \
-	int index = elem >= 64 ? 1 : 0;                                        \
-	uint64_t mask = (1 << (elem % 64));                                    \
+	}                                                                      \
+	int index;                                                             \
+	uint64_t mask;                                                         \
+	if (elem < 64) {                                                       \
+		index = 0;                                                     \
+		mask = 1 << elem;                                              \
+	} else {                                                               \
+		index = 1;                                                     \
+		mask = 1 << (elem - 64);                                       \
+	}                                                                      \
 	bool exists = (set->exists[index] & mask) != 0;
 
 #define _NH_SET_ASCII_IMPL(name)                                               \
@@ -37,7 +45,7 @@
 	{                                                                      \
 		_NH_SET_ASCII_ELEM_STATS(set, elem)                            \
 		set->exists[index] |= mask;                                    \
-		return exists;                                                 \
+		return !exists;                                                \
 	}                                                                      \
                                                                                \
 	bool name##_delete(name* set, char elem)                               \
