@@ -5,13 +5,13 @@
 
 /**
  * Internal macro. Declare structs and functions for a specific Map<View<char>,
- * ?>, and helper functions for using char arrays directly as keys.
+ * ?>, and helper functions for using char arrays as keys directly.
  *
  * @param value_type value type
  * @param value_name name of the value type
  * @param default_value expression evaluated when a default value is needed
  * @param fn_hash macro or function that generates a hash when called with a key
- * @param fn_equals macro or function that checks whether two values are equal
+ * @param fn_equals macro or function that checks whether two keys are equal
  */
 #define _NH_MAP_VIEW_STR_IMPL(value_type, value_name, default_value, fn_hash,  \
 			      fn_equals)                                       \
@@ -73,8 +73,8 @@
 			      nh_view_str_hash, nh_view_str_equals)
 
 /**
- * Helper macro to get using a string literal for a specific Map<View<char>, ?>.
- * The name of the value type of the map must be provided.
+ * Helper macro to get from a specific Map<View<char>, ?> using a string
+ * literal. The name of the value type of the map must be provided.
  *
  * @param value_name name of the value type
  * @param map map
@@ -85,9 +85,9 @@
 						       sizeof(str) - 1)
 
 /**
- * Helper macro to get using a string literal for a specific Map<View<char>, ?>,
- * returning a default value if the key doesn't exist.
- * The name of the value type of the map must be provided.
+ * Helper macro to get from a specific Map<View<char>, ?> using a string
+ * literal, returning a default value if the key doesn't exist. The name of the
+ * value type of the map must be provided.
  *
  * @param value_name name of the value type
  * @param map map
@@ -99,7 +99,7 @@
 		map, str, sizeof(str) - 1, d)
 
 /**
- * Helper macro to set using a string literal for a specific Map<View<char>, ?>.
+ * Helper macro to set in a specific Map<View<char>, ?> using a string literal.
  * The name of the value type of the map must be provided.
  *
  * @param value_name name of the value type
@@ -112,8 +112,8 @@
 						       sizeof(str) - 1, v)
 
 /**
- * Helper macro to check existence using a string literal for a specific
- * Map<View<char>, ?>. The name of the value type of the map must be provided.
+ * Helper macro to check existence in a specific <Map<View<char>, ?> using a
+ * string literal. The name of the value type of the map must be provided.
  *
  * @param value_name name of the value type
  * @param map map
@@ -124,8 +124,8 @@
 						       sizeof(str) - 1)
 
 /**
- * Helper macro to delete using a string literal for a specific Map<View<char>,
- * ?>. The name of the value type of the map must be provided.
+ * Helper macro to delete from a specific Map<View<char>, ?> using a string
+ * literal. The name of the value type of the map must be provided.
  *
  * @param value_name name of the value type
  * @param map map
@@ -149,8 +149,8 @@
 			      nh_view_str_hash_i, nh_view_str_equals_i)
 
 /**
- * Helper macro to get using a string literal for a specific case-insensitive
- * Map<View<char>, ?>. The name of the value type of the map must be provided.
+ * Helper macro to get from a specific case-insensitive Map<View<char>, ?> using
+ * a string literal. The name of the value type of the map must be provided.
  *
  * @param value_name name of the value type
  * @param map map
@@ -160,8 +160,8 @@
 	nh_map_view_istr_##value_name##_get_whole_array(map, str,              \
 							sizeof(str) - 1)
 /**
- * Helper macro to get using a string literal for a specific case-insensitive
- * Map<View<char>, ?>, returning a default value if the key doesn't exist. The
+ * Helper macro to get from a specific case-insensitive Map<View<char>, ?> using
+ * a string literal, returning a default value if the key doesn't exist. The
  * name of the value type of the map must be provided.
  *
  * @param value_name name of the value type
@@ -174,8 +174,8 @@
 		map, str, sizeof(str) - 1, d)
 
 /**
- * Helper macro to set using a string literal for a specific case-insensitive
- * Map<View<char>, ?>. The name of the value type of the map must be provided.
+ * Helper macro to set for a specific case-insensitive Map<View<char>, ?> using
+ * a string literal. The name of the value type of the map must be provided.
  *
  * @param value_name name of the value type
  * @param map map
@@ -187,9 +187,9 @@
 							sizeof(str) - 1, v)
 
 /**
- * Helper macro to check existence using a string literal for a specific
- * case-insensitive Map<View<char>, ?>. The name of the value type of the map
- * must be provided.
+ * Helper macro to check existence in a specific case-insensitive
+ * Map<View<char>, ?> using a string literal. The name of the value type of the
+ * map must be provided.
  *
  * @param value_name name of the value type
  * @param map map
@@ -200,8 +200,9 @@
 							sizeof(str) - 1)
 
 /**
- * Helper macro to delete using a string literal for a specific case-insensitive
- * Map<View<char>, ?>. The name of the value type of the map must be provided.
+ * Helper macro to delete from a specific case-insensitive Map<View<char>, ?>
+ * using a string literal. The name of the value type of the map must be
+ * provided.
  *
  * @param value_name name of the value type
  * @param map map

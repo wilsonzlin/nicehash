@@ -10,7 +10,7 @@
  * @param value_type value type
  * @param default_value expression evaluated when a default value is needed
  * @param fn_hash macro or function that generates a hash when called with a key
- * @param fn_equals macro or function that checks whether two values are equal
+ * @param fn_equals macro or function that checks whether two keys are equal
  */
 #define _NH_MAP_IMPL(name, key_type, value_type, default_value, fn_hash,       \
 		     fn_equals)                                                \
@@ -53,7 +53,7 @@
  * @param value_name name of the value type
  * @param default_value expression evaluated when a default value is needed
  * @param fn_hash macro or function that generates a hash when called with a key
- * @param fn_equals macro or function that checks whether two values are equal
+ * @param fn_equals macro or function that checks whether two keys are equal
  */
 #define NH_MAP(key_type, key_name, value_type, value_name, default_value,      \
 	       fn_hash, fn_equals)                                             \
