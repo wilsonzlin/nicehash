@@ -19,10 +19,13 @@ int main(void)
 
 	expect(nh_map_view_str_int32_has(map1, view_whole_bcde),
 	       "Has existing");
+
 	expect(nh_map_view_str_int32_has(map1, view_sub_bcde),
 	       "Has existing but different view");
+
 	expect(nh_map_view_str_int32_get(map1, view_sub_bcde) == 100,
 	       "Get existing but different view");
+
 	expect(!nh_map_view_str_int32_has(map1, view_sub_abcd),
 	       "Does not have view with same underlying array but different indices");
 }
