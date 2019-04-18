@@ -90,7 +90,7 @@
                                                                                \
 	int name##_compare(name* view, name* other)                            \
 	{                                                                      \
-		return name##_compare_array(view, other->array,                \
+		return name##_compare_array(view, &other->array[other->start], \
 					    other->length);                    \
 	}                                                                      \
                                                                                \

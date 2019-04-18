@@ -1,6 +1,6 @@
 #pragma once
 
-#include <string.h>
+#include <strings.h>
 #include "../lib/khash.h"
 #include "./view.h"
 
@@ -33,7 +33,8 @@ int nh_view_str_compare_array_i(nh_view_str* view, char* other,
 
 int nh_view_str_compare_i(nh_view_str* view, nh_view_str* other)
 {
-	return nh_view_str_compare_array_i(view, other->array, other->length);
+	return nh_view_str_compare_array_i(view, &other->array[other->start],
+					   other->length);
 }
 
 bool nh_view_str_equals_array_i(nh_view_str* view, char* other,
