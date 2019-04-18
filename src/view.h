@@ -68,18 +68,30 @@
 		name##_update_length(view);                                    \
 	}                                                                      \
                                                                                \
-	int name##_compare(name* view, name* other)                            \
+	int name##_compare_array(name* view, elem_type* other,                 \
+				 size_t other_length)                          \
 	{                                                                      \
-		int len_cmp = view->length < other->length                     \
+		int len_cmp = view->length < other_length                      \
 				      ? -1                                     \
-				      : view->length > other->length ? 1 : 0;  \
+				      : view->length > other_length ? 1 : 0;   \
 		if (len_cmp != 0) {                                            \
 			return len_cmp;                                        \
 		}                                                              \
                                                                                \
-		return memcmp(&view->array[view->start],                       \
-			      &other->array[other->start],                     \
+		return memcmp(&view->array[view->start], other,                \
 			      view->length * sizeof(elem_type));               \
+	}                                                                      \
+                                                                               \
+	int name##_compare(name* view, name* other)                            \
+	{                                                                      \
+		return name##_compare_array(view, other->array,                \
+					    other->length);                    \
+	}                                                                      \
+                                                                               \
+	bool name##_equals_array(name* view, elem_type* other,                 \
+				 size_t other_length)                          \
+	{                                                                      \
+		return name##_compare_array(view, other, other_length) == 0;   \
 	}                                                                      \
                                                                                \
 	bool name##_equals(name* view, name* other)                            \

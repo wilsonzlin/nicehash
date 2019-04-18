@@ -7,8 +7,12 @@ NH_VIEW(char, str)
 
 #define nh_view_str_of_whole_literal(str)                                      \
 	nh_view_str_of_whole_array(str, sizeof(str) - 1)
+#define nh_view_str_compare_literal(view, str)                                 \
+	nh_view_str_compare_array(view, str, sizeof(str) - 1)
+#define nh_view_str_equals_literal(view, str)                                  \
+	nh_view_str_equals_array(view, str, sizeof(str) - 1)
 
-// Based on khash's string hash function.
+// Based on khash.h string hash function.
 int nh_view_str_hash(nh_view_str* view)
 {
 	if (nh_view_str_is_invalid(view))
