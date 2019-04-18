@@ -26,6 +26,19 @@ int main(void)
 	expect(nh_map_view_str_int32_get(map1, view_sub_bcde) == 100,
 	       "Get existing but different view");
 
-	expect(!nh_map_view_str_int32_has(map1, view_sub_abcd),
-	       "Does not have view with same underlying array but different indices");
+	expect_false(
+		nh_map_view_str_int32_has(map1, view_sub_abcd),
+		"Does not have view with same underlying array but different indices");
+
+	expect(nh_map_view_str_get_whole_literal(int32, map1, "bcde") == 100,
+	       "Get existing whole literal");
+
+	expect_false(nh_map_view_str_has_whole_literal(int32, map1, "bcd"),
+		     "Does not have non-existent whole literal");
+
+	expect(nh_map_view_str_delete_whole_literal(int32, map1, "bcde"),
+	       "Delete existing whole literal");
+
+	expect_false(nh_map_view_str_has_whole_literal(int32, map1, "bcde"),
+		     "Does not have deleted whole literal");
 }
