@@ -12,8 +12,8 @@ int main(void)
 	nh_view_str* view_sub_bcdef = nh_view_str_create(alpha, 1, 5);
 
 	expect(nh_view_str_equals(view_whole, view_sub_bcde), "views equal");
-	expect(!nh_view_str_equals(view_whole, view_sub_abcd),
-	       "views do not equal");
-	expect(!nh_view_str_equals(view_whole, view_sub_bcdef),
-	       "views do not equal");
+	expect_false(nh_view_str_equals(view_whole, view_sub_abcd),
+		     "views do not equal");
+	expect_false(nh_view_str_equals(view_whole, view_sub_bcdef),
+		     "views do not equal");
 }
