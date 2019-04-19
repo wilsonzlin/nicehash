@@ -2,7 +2,7 @@
 
 int nh_util_compare_integers(int a, int b)
 {
-	return (a > b) - (b - a);
+	return (a > b) - (a < b);
 }
 
 char nh_util_lowercase(char c)
