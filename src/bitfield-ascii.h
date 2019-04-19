@@ -2,4 +2,6 @@
 
 #include "./bitfield.h"
 
-NH_BITFIELD(ascii, char, 128)
+#define NH_BITFIELD_ASCII(name) NH_BITFIELD(name, char, 128)
+
+NH_BITFIELD_ASCII(nh_bitfield_ascii)

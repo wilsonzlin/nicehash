@@ -2,24 +2,28 @@
 
 #include <strings.h>
 #include "../lib/khash.h"
+#include "./util.h"
 #include "./view.h"
 
-NH_VIEW(char, str)
+#define NH_VIEW_STR(name) \
+	NH_VIEW(name, char)
+
+NH_VIEW_STR(nh_view_str)
 
 #define nh_view_str_of_whole_literal(str)                                      \
-	nh_view_str_of_whole_array(str, sizeof(str) - 1)
+	nh_view_str_of_whole_array(nh_litarr(str))
 
 #define nh_view_str_compare_literal(view, str)                                 \
-	nh_view_str_compare_array(view, str, sizeof(str) - 1)
+	nh_view_str_compare_array(view, nh_litarr(str))
 
 #define nh_view_str_compare_literal_i(view, str)                               \
-	nh_view_str_compare_array_i(view, str, sizeof(str) - 1)
+	nh_view_str_compare_array_i(view, nh_litarr(str))
 
 #define nh_view_str_equals_literal(view, str)                                  \
-	nh_view_str_equals_array(view, str, sizeof(str) - 1)
+	nh_view_str_equals_array(view, nh_litarr(str))
 
 #define nh_view_str_equals_literal_i(view, str)                                \
-	nh_view_str_equals_array_i(view, str, sizeof(str) - 1)
+	nh_view_str_equals_array_i(view, nh_litarr(str))
 
 int nh_view_str_compare_array_i(nh_view_str* view, char* other,
 				size_t other_length)

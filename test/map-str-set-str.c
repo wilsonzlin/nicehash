@@ -4,7 +4,7 @@
 #include <map-str.h>
 #include "./_common.h"
 
-NH_MAP_STR(nh_set_str*, set_str, NULL)
+NH_MAP_STR(nh_map_str_set_str, nh_set_str*, NULL)
 
 int main(void)
 {

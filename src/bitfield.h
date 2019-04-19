@@ -33,7 +33,7 @@
 	/**                                                                    \
 	 * Allocate memory for and create a new bit field.                     \
 	 *                                                                     \
-	 * @return pointer to a heap-allocated bit field.                      \
+	 * @return pointer to a heap-allocated bit field                      \
 	 */                                                                    \
 	name* name##_create(void)                                              \
 	{                                                                      \
@@ -107,17 +107,17 @@
 		memset(bf->exists, 0, (size) * sizeof(cell_type));             \
 	}
 
-#define _NH_BITFIELD_IMPL_HELPER(elem_name, cell_type, cell_bits, elem_type,   \
+#define _NH_BITFIELD_IMPL_HELPER(name, cell_type, cell_bits, elem_type,        \
 				 max_value)                                    \
-	_NH_BITFIELD_IMPL(nh_bitfield_##elem_name, cell_type, cell_bits,       \
+	_NH_BITFIELD_IMPL(name, cell_type, cell_bits,                          \
 			  (max_value) / (cell_bits)                            \
 				  + ((max_value) % (cell_bits) != 0),          \
 			  elem_type, max_value)
 
-#define NH_BITFIELD_CUSTOM_CELL(elem_name, cell_type, elem_type, max_value)    \
-	_NH_BITFIELD_IMPL_HELPER(elem_name, cell_type,                         \
+#define NH_BITFIELD_CUSTOM_CELL(name, cell_type, elem_type, max_value)         \
+	_NH_BITFIELD_IMPL_HELPER(name, cell_type,                              \
 				 sizeof(cell_type) * CHAR_BIT, elem_type,      \
 				 max_value)
 
-#define NH_BITFIELD(elem_name, elem_type, max_value)                           \
-	NH_BITFIELD_CUSTOM_CELL(elem_name, uint64_t, elem_type, max_value)
+#define NH_BITFIELD(name, elem_type, max_value)                                \
+	NH_BITFIELD_CUSTOM_CELL(name, uint64_t, elem_type, max_value)

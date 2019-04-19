@@ -6,7 +6,7 @@
 #include <string.h>
 #include "./util.h"
 
-#define _NH_VIEW_IMPL(name, elem_type)                                         \
+#define NH_VIEW(name, elem_type)                                         \
 	typedef struct {                                                       \
 		size_t start;                                                  \
 		size_t end;                                                    \
@@ -104,6 +104,3 @@
 	{                                                                      \
 		return name##_compare(view, other) == 0;                       \
 	}
-
-#define NH_VIEW(elem_type, elem_name)                                          \
-	_NH_VIEW_IMPL(nh_view_##elem_name, elem_type)

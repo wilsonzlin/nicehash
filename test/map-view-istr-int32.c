@@ -3,7 +3,7 @@
 #include <map-view-str.h>
 #include "./_common.h"
 
-NH_MAP_VIEW_ISTR(int32_t, int32, -1)
+NH_MAP_VIEW_ISTR(nh_map_view_istr_int32, int32_t, -1)
 
 int main(void)
 {
@@ -30,15 +30,19 @@ int main(void)
 		nh_map_view_istr_int32_has(map1, view_sub_abcd),
 		"Does not have view with same underlying array but different indices");
 
-	expect(nh_map_view_istr_get_whole_literal(int32, map1, "bcde") == 100,
+	expect(nh_map_view_istr_int32_get_whole_array(map1, nh_litarr("bcde"))
+		       == 100,
 	       "Get existing whole literal");
 
-	expect_false(nh_map_view_istr_has_whole_literal(int32, map1, "bcd"),
-		     "Does not have non-existent whole literal");
+	expect_false(
+		nh_map_view_istr_int32_has_whole_array(map1, nh_litarr("bcd")),
+		"Does not have non-existent whole literal");
 
-	expect(nh_map_view_istr_delete_whole_literal(int32, map1, "bcde"),
+	expect(nh_map_view_istr_int32_delete_whole_array(map1,
+							 nh_litarr("bcde")),
 	       "Delete existing whole literal");
 
-	expect_false(nh_map_view_istr_has_whole_literal(int32, map1, "bcde"),
-		     "Does not have deleted whole literal");
+	expect_false(
+		nh_map_view_istr_int32_has_whole_array(map1, nh_litarr("bcde")),
+		"Does not have deleted whole literal");
 }

@@ -3,7 +3,7 @@
 #include <map-str.h>
 #include "./_common.h"
 
-NH_MAP_STR(int32_t, int32, -1)
+NH_MAP_STR(nh_map_str_int32, int32_t, -1)
 
 int main(void)
 {
