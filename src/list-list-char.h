@@ -4,7 +4,7 @@
 #include "./list.h"
 #include <string.h>
 
-NH_LIST(nh_list_list_char, nh_list_char*, nh_list_char*, NULL);
+NH_LIST(nh_list_list_char, nh_list_char*, NULL);
 
 int nh_list_list_char_compare(nh_list_list_char* a, nh_list_list_char* b)
 {

@@ -1,11 +1,9 @@
+#include "./_common.h"
+#include <list-char.h>
 #include <stdint.h>
 #include <stdio.h>
 #include <string.h>
-
 #include <sys/random.h>
-
-#include "./_common.h"
-#include <list-char.h>
 
 static char* generate_random_data(size_t bytes)
 {
@@ -28,6 +26,21 @@ int main(void)
 	nh_list_char_add_all_right_array(list, "cdefghijkl", 3);
 	expect(strcmp(nh_list_char_underlying(list), "abcde") == 0,
 	       "List contains 'abcde'");
+
+	nh_list_char* abcdeNUL = nh_list_char_create();
+	nh_list_char_add_all_right_array(abcdeNUL, "abcde\0", 6);
+	expect(nh_list_char_compare(list, abcdeNUL) < 0, "'abcde' is less than 'abcde\\0'");
+
+	nh_list_char* abcdd = nh_list_char_create();
+	nh_list_char_add_all_right_array(abcdd, "abcdd", 5);
+	expect(nh_list_char_compare(list, abcdd) > 0, "'abcde' is greater than 'abcdd'");
+
+	expect(nh_list_char_compare_array(list, "abcde") == 0, "'abcde' is equal to literal 'abcde'");
+	expect(nh_list_char_compare_array(list, "abcde\0") == 0, "'abcde' is equal to literal 'abcde\\0'");
+	expect(nh_list_char_compare_array(list, "abcde\0\0") == 0, "'abcde' is equal to literal 'abcde\\0\\0'");
+	expect(nh_list_char_compare_array(list, "abcde\0\1") == 0, "'abcde' is equal to literal 'abcde\\0\\1'");
+	expect(nh_list_char_compare_array(list, "abcd\0\0") > 0, "'abcde' is greater than literal 'abcd\\0\\0'");
+	expect(nh_list_char_compare_array(list, "abce\0\0") < 0, "'abcde' is less than literal 'abce\\0\\0'");
 
 	char const* prefix = "0123456789012345678901234567890123456789";
 	for (int i = strlen(prefix) - 1; i >= 0; i--) {
