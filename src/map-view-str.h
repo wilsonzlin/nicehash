@@ -16,7 +16,7 @@
  */
 #define _NH_MAP_VIEW_STR_IMPL(key_name, value_type, value_name, default_value, \
 			      fn_hash, fn_equals)                              \
-	NH_MAP(nh_view_str*, view_str, value_type, value_name, default_value,  \
+	NH_MAP(nh_view_str*, key_name, value_type, value_name, default_value,  \
 	       fn_hash, fn_equals)                                             \
                                                                                \
 	value_type nh_map_##key_name##_##value_name##_get_whole_array(         \
