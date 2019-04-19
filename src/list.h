@@ -9,6 +9,15 @@
 #define _NH_LIST_INITIAL_SIDE_SIZE 10
 #define _NH_LIST_GROWTH_RATE 1.5
 
+/**
+ * Implement the comparison function for a specific list, satisifying the
+ * prototype declared by {@link NH_LIST}. The function compares the lengths of
+ * both lists. If both lists have the same length, `memcmp` is used to compare
+ * the bytes directly.
+ *
+ * @param name name of the specific list type
+ * @param elem_type list's element type
+ */
 #define NH_LIST_DEFAULT_COMPARE(name, elem_type)                               \
 	int name##_compare(name* a, name* b)                                   \
 	{                                                                      \
@@ -19,6 +28,20 @@
 			      a->length * sizeof(elem_type));                  \
 	}
 
+/**
+ * Declare structs and functions for a specific List<?>.
+ *
+ * A comparison function prototype `{name}_compare` is declared; it will need to
+ * be implemented. It takes two specific lists and returns an integer less than,
+ * equal to, or greater than zero if the first list is found, respectively, to
+ * be less than, equal to, or greater than the second list. {@link
+ * NH_LIST_DEFAULT_COMPARE} can be used to implement such a function that uses
+ * `memcmp`.
+ *
+ * @param name name to use for the type to be declared
+ * @param elem_type element type
+ * @param invalid_value expression evaluated representing out of range indices
+ */
 #define NH_LIST(name, elem_type, invalid_value)                                \
 	typedef struct {                                                       \
 		elem_type* data;                                               \
@@ -33,14 +56,14 @@
 				    size_t initial_size_right)                 \
 	{                                                                      \
 		size_t initial_size = initial_size_left + initial_size_right;  \
-		name* buf = malloc(sizeof(name));                              \
-		buf->data = calloc(initial_size, sizeof(elem_type));           \
-		buf->head = initial_size_left;                                 \
-		buf->length = 0;                                               \
-		buf->size = initial_size;                                      \
-		buf->size_left = initial_size_left;                            \
-		buf->size_right = initial_size_right;                          \
-		return buf;                                                    \
+		name* list = malloc(sizeof(name));                             \
+		list->data = calloc(initial_size, sizeof(elem_type));          \
+		list->head = initial_size_left;                                \
+		list->length = 0;                                              \
+		list->size = initial_size;                                     \
+		list->size_left = initial_size_left;                           \
+		list->size_right = initial_size_right;                         \
+		return list;                                                   \
 	}                                                                      \
                                                                                \
 	name* name##_create(void)                                              \
@@ -49,85 +72,86 @@
 					     _NH_LIST_INITIAL_SIDE_SIZE);      \
 	}                                                                      \
                                                                                \
-	void name##_destroy(name* buf)                                         \
+	void name##_destroy(name* list)                                        \
 	{                                                                      \
-		free(buf->data);                                               \
-		free(buf);                                                     \
+		free(list->data);                                              \
+		free(list);                                                    \
 	}                                                                      \
                                                                                \
-	void name##_destroy_shallow(name* buf)                                 \
+	void name##_destroy_shallow(name* list)                                \
 	{                                                                      \
-		free(buf);                                                     \
+		free(list);                                                    \
 	}                                                                      \
                                                                                \
-	elem_type* name##_underlying(name* buf)                                \
+	elem_type* name##_underlying(name* list)                               \
 	{                                                                      \
-		return &buf->data[buf->head];                                  \
+		return &list->data[list->head];                                \
 	}                                                                      \
                                                                                \
-	elem_type* name##_underlying_copy(name* buf)                           \
+	elem_type* name##_underlying_copy(name* list)                          \
 	{                                                                      \
-		elem_type* copy = calloc(buf->length + 1, sizeof(elem_type));  \
-		memcpy(copy, name##_underlying(buf),                           \
-		       buf->length * sizeof(elem_type));                       \
+		elem_type* copy = calloc(list->length + 1, sizeof(elem_type)); \
+		memcpy(copy, name##_underlying(list),                          \
+		       list->length * sizeof(elem_type));                      \
 		return copy;                                                   \
 	}                                                                      \
                                                                                \
-	bool name##_valid_index(name* buf, size_t idx)                         \
+	bool name##_valid_index(name* list, size_t idx)                        \
 	{                                                                      \
-		return idx < buf->length;                                      \
+		return idx < list->length;                                     \
 	}                                                                      \
                                                                                \
-	elem_type name##_get(name* buf, int64_t idx)                           \
+	elem_type name##_get(name* list, int64_t idx)                          \
 	{                                                                      \
 		if (idx < 0) {                                                 \
-			idx = buf->length + idx;                               \
+			idx = list->length + idx;                              \
 		}                                                              \
                                                                                \
-		if (!name##_valid_index(buf, idx)) {                           \
+		if (!name##_valid_index(list, idx)) {                          \
 			return invalid_value;                                  \
 		}                                                              \
                                                                                \
-		return buf->data[buf->head + idx];                             \
+		return list->data[list->head + idx];                           \
 	}                                                                      \
                                                                                \
-	elem_type name##_first(name* buf)                                      \
+	elem_type name##_first(name* list)                                     \
 	{                                                                      \
                                                                                \
-		return name##_get(buf, 0);                                     \
+		return name##_get(list, 0);                                    \
 	}                                                                      \
                                                                                \
-	elem_type name##_last(name* buf)                                       \
+	elem_type name##_last(name* list)                                      \
 	{                                                                      \
                                                                                \
-		return name##_get(buf, buf->length - 1);                       \
+		return name##_get(list, list->length - 1);                     \
 	}                                                                      \
                                                                                \
-	bool name##_is_empty(name* buf)                                        \
+	bool name##_is_empty(name* list)                                       \
 	{                                                                      \
                                                                                \
-		return buf->length == 0;                                       \
+		return list->length == 0;                                      \
 	}                                                                      \
                                                                                \
-	void name##_set(name* buf, size_t idx, elem_type c)                    \
+	void name##_set(name* list, size_t idx, elem_type c)                   \
 	{                                                                      \
-		if (!name##_valid_index(buf, idx)) {                           \
+		if (!name##_valid_index(list, idx)) {                          \
 			return;                                                \
 		}                                                              \
                                                                                \
-		buf->data[buf->head + idx] = c;                                \
+		list->data[list->head + idx] = c;                              \
 	}                                                                      \
                                                                                \
-	void name##_clear(name* buf)                                           \
+	void name##_clear(name* list)                                          \
 	{                                                                      \
-		memset(name##_underlying(buf), 0,                              \
-		       buf->length * sizeof(elem_type));                       \
-		buf->length = 0;                                               \
+		memset(name##_underlying(list), 0,                             \
+		       list->length * sizeof(elem_type));                      \
+		list->length = 0;                                              \
 	}                                                                      \
                                                                                \
-	static void name##_size_increase_left(name* buf, size_t new_size_left) \
+	static void _##name##_size_increase_left(name* list,                   \
+						 size_t new_size_left)         \
 	{                                                                      \
-		size_t old_size_left = buf->size_left;                         \
+		size_t old_size_left = list->size_left;                        \
                                                                                \
 		if (old_size_left >= new_size_left) {                          \
 			return;                                                \
@@ -135,143 +159,143 @@
                                                                                \
 		size_t diff_size_left = new_size_left - old_size_left;         \
                                                                                \
-		size_t new_size = new_size_left + buf->size_right;             \
+		size_t new_size = new_size_left + list->size_right;            \
                                                                                \
 		elem_type* new_data = calloc(new_size, sizeof(elem_type));     \
-		memcpy(&(new_data[diff_size_left]), buf->data,                 \
-		       sizeof(elem_type) * buf->length);                       \
-		free(buf->data);                                               \
+		memcpy(&(new_data[diff_size_left]), list->data,                \
+		       sizeof(elem_type) * list->length);                      \
+		free(list->data);                                              \
                                                                                \
-		buf->data = new_data;                                          \
-		buf->head += diff_size_left;                                   \
-		buf->size = new_size;                                          \
-		buf->size_left = new_size_left;                                \
+		list->data = new_data;                                         \
+		list->head += diff_size_left;                                  \
+		list->size = new_size;                                         \
+		list->size_left = new_size_left;                               \
 	}                                                                      \
                                                                                \
-	static void name##_size_increase_right(name* buf,                      \
-					       size_t new_size_right)          \
+	static void _##name##_size_increase_right(name* list,                  \
+						  size_t new_size_right)       \
 	{                                                                      \
-		size_t old_size = buf->size;                                   \
-		size_t old_size_right = buf->size_right;                       \
+		size_t old_size = list->size;                                  \
+		size_t old_size_right = list->size_right;                      \
                                                                                \
 		if (old_size_right >= new_size_right) {                        \
 			return;                                                \
 		}                                                              \
                                                                                \
-		size_t new_size = buf->size_left + new_size_right;             \
+		size_t new_size = list->size_left + new_size_right;            \
                                                                                \
 		elem_type* new_data =                                          \
-			realloc(buf->data, sizeof(elem_type) * new_size);      \
+			realloc(list->data, sizeof(elem_type) * new_size);     \
 		memset(&new_data[old_size], 0,                                 \
 		       sizeof(elem_type) * (new_size - old_size));             \
                                                                                \
-		buf->data = new_data;                                          \
-		buf->size = new_size;                                          \
-		buf->size_right = new_size_right;                              \
+		list->data = new_data;                                         \
+		list->size = new_size;                                         \
+		list->size_right = new_size_right;                             \
 	}                                                                      \
                                                                                \
-	void name##_size_ensure_left(name* buf, size_t amount)                 \
+	void name##_size_ensure_left(name* list, size_t amount)                \
 	{                                                                      \
 		size_t desired_size = amount + 1;                              \
                                                                                \
-		if (buf->size_left < desired_size) {                           \
-			name##_size_increase_left(buf, desired_size);          \
+		if (list->size_left < desired_size) {                          \
+			_##name##_size_increase_left(list, desired_size);      \
 		}                                                              \
 	}                                                                      \
                                                                                \
-	void name##_size_ensure_right(name* buf, size_t amount)                \
+	void name##_size_ensure_right(name* list, size_t amount)               \
 	{                                                                      \
 		size_t desired_size = amount + 1;                              \
                                                                                \
-		if (buf->size_right < desired_size) {                          \
-			name##_size_increase_right(buf, desired_size);         \
+		if (list->size_right < desired_size) {                         \
+			_##name##_size_increase_right(list, desired_size);     \
 		}                                                              \
 	}                                                                      \
                                                                                \
-	void name##_add_right(name* buf, elem_type tail)                       \
+	void name##_add_right(name* list, elem_type tail)                      \
 	{                                                                      \
-		size_t next_idx = buf->head + buf->length;                     \
+		size_t next_idx = list->head + list->length;                   \
                                                                                \
-		if (next_idx >= buf->size - 1) {                               \
-			size_t old_size = buf->size_right;                     \
+		if (next_idx >= list->size - 1) {                              \
+			size_t old_size = list->size_right;                    \
 			/* +1 to guarantee an increase, +1 to guarantee '\0'   \
 			 * terminator */                                       \
 			size_t new_size = old_size * _NH_LIST_GROWTH_RATE + 2; \
                                                                                \
-			name##_size_increase_right(buf, new_size);             \
+			_##name##_size_increase_right(list, new_size);         \
 		}                                                              \
                                                                                \
-		buf->data[next_idx] = tail;                                    \
-		buf->length++;                                                 \
+		list->data[next_idx] = tail;                                   \
+		list->length++;                                                \
 	}                                                                      \
                                                                                \
-	void name##_add_all_right_array(name* buf, elem_type* ext,             \
+	void name##_add_all_right_array(name* list, elem_type* ext,            \
 					size_t ext_len)                        \
 	{                                                                      \
 		size_t free_space_right =                                      \
-			buf->size - buf->head - buf->length - 1;               \
+			list->size - list->head - list->length - 1;            \
 		size_t required_space_right =                                  \
 			ext_len + 1; /* For null terminator */                 \
                                                                                \
 		if (required_space_right > free_space_right) {                 \
 			name##_size_ensure_right(                              \
-				buf, buf->size_right + required_space_right    \
-					     - free_space_right);              \
+				list, list->size_right + required_space_right  \
+					      - free_space_right);             \
 		}                                                              \
                                                                                \
-		memcpy(&buf->data[buf->head + buf->length], ext,               \
+		memcpy(&list->data[list->head + list->length], ext,            \
 		       sizeof(elem_type) * ext_len);                           \
-		buf->length += ext_len;                                        \
+		list->length += ext_len;                                       \
 	}                                                                      \
                                                                                \
-	void name##_add_all_right_list(name* buf, name* ext)                   \
+	void name##_add_all_right_list(name* list, name* ext)                  \
 	{                                                                      \
-		name##_add_all_right_array(buf, name##_underlying(ext),        \
+		name##_add_all_right_array(list, name##_underlying(ext),       \
 					   ext->length);                       \
 	}                                                                      \
                                                                                \
-	elem_type name##_remove_left(name* buf)                                \
+	elem_type name##_remove_left(name* list)                               \
 	{                                                                      \
-		if (buf->length == 0) {                                        \
+		if (list->length == 0) {                                       \
 			return invalid_value;                                  \
 		}                                                              \
                                                                                \
-		elem_type f = buf->data[buf->head];                            \
-		buf->data[buf->head] = 0;                                      \
-		buf->head++;                                                   \
-		buf->length--;                                                 \
+		elem_type f = list->data[list->head];                          \
+		list->data[list->head] = 0;                                    \
+		list->head++;                                                  \
+		list->length--;                                                \
                                                                                \
 		return f;                                                      \
 	}                                                                      \
                                                                                \
-	void name##_add_left(name* buf, elem_type head)                        \
+	void name##_add_left(name* list, elem_type head)                       \
 	{                                                                      \
-		if (buf->head == 0) {                                          \
-			size_t old_size = buf->size_left;                      \
+		if (list->head == 0) {                                         \
+			size_t old_size = list->size_left;                     \
 			size_t new_size =                                      \
 				old_size * _NH_LIST_GROWTH_RATE                \
 				+ 1; /* +1 to always guarantee an increase */  \
                                                                                \
-			name##_size_increase_left(buf, new_size);              \
+			_##name##_size_increase_left(list, new_size);          \
 		}                                                              \
                                                                                \
-		buf->head--;                                                   \
-		buf->data[buf->head] = head;                                   \
-		buf->length++;                                                 \
+		list->head--;                                                  \
+		list->data[list->head] = head;                                 \
+		list->length++;                                                \
 	}                                                                      \
                                                                                \
-	elem_type name##_remove_right(name* buf)                               \
+	elem_type name##_remove_right(name* list)                              \
 	{                                                                      \
-		if (buf->length == 0) {                                        \
+		if (list->length == 0) {                                       \
 			return invalid_value;                                  \
 		}                                                              \
                                                                                \
-		size_t idx = buf->head + buf->length - 1;                      \
+		size_t idx = list->head + list->length - 1;                    \
                                                                                \
-		elem_type l = buf->data[idx];                                  \
+		elem_type l = list->data[idx];                                 \
                                                                                \
-		buf->data[idx] = 0;                                            \
-		buf->length--;                                                 \
+		list->data[idx] = 0;                                           \
+		list->length--;                                                \
                                                                                \
 		return l;                                                      \
 	}                                                                      \

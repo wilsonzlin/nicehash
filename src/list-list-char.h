@@ -4,57 +4,60 @@
 #include "./list.h"
 #include <string.h>
 
-NH_LIST(nh_list_list_char, nh_list_char*, NULL);
-
-int nh_list_list_char_compare(nh_list_list_char* a, nh_list_list_char* b)
-{
-	for (size_t i = 0; true; i++) {
-		nh_list_char* a1 = nh_list_list_char_get(a, i);
-		nh_list_char* b1 = nh_list_list_char_get(b, i);
-
-		if (a1 == NULL) {
-			if (b1 == NULL) {
-				return 0;
-			} else {
-				return -1;
-			}
-		} else {
-			return 1;
-		}
-
-		int cmp = nh_list_char_compare(a1, b1);
-		if (cmp != 0) {
-			return cmp;
-		}
+#define NH_LIST_LIST_CHAR(name)                                                \
+	NH_LIST(name, nh_list_char*, NULL);                                    \
+                                                                               \
+	int name##_compare(name* a, name* b)                                   \
+	{                                                                      \
+		for (size_t i = 0; true; i++) {                                \
+			nh_list_char* a1 = name##_get(a, i);                   \
+			nh_list_char* b1 = name##_get(b, i);                   \
+                                                                               \
+			if (a1 == NULL) {                                      \
+				if (b1 == NULL) {                              \
+					return 0;                              \
+				} else {                                       \
+					return -1;                             \
+				}                                              \
+			} else {                                               \
+				return 1;                                      \
+			}                                                      \
+                                                                               \
+			int cmp = nh_list_char_compare(a1, b1);                \
+			if (cmp != 0) {                                        \
+				return cmp;                                    \
+			}                                                      \
+		}                                                              \
+	}                                                                      \
+                                                                               \
+	name* name##_create_from_split(char* source, char delim)               \
+	{                                                                      \
+		name* parts = name##_create();                                 \
+		nh_list_char* part = nh_list_char_create();                    \
+		name##_append(parts, part);                                    \
+                                                                               \
+		char c;                                                        \
+		size_t i = 0;                                                  \
+		while ((c = source[i])) {                                      \
+			if (c == delim) {                                      \
+				part = nh_list_char_create();                  \
+				name##_append(parts, part);                    \
+			} else {                                               \
+				nh_list_char_append(part, c);                  \
+			}                                                      \
+                                                                               \
+			i++;                                                   \
+		}                                                              \
+                                                                               \
+		return parts;                                                  \
+	}                                                                      \
+                                                                               \
+	void name##_destroy_from_split(name* list)                             \
+	{                                                                      \
+		for (size_t i = 0; i < list->length; i++) {                    \
+			nh_list_char_destroy(name##_get(list, i));             \
+		}                                                              \
+		name##_destroy(list);                                          \
 	}
-}
 
-nh_list_list_char* nh_list_list_char_create_from_split(char* source, char delim)
-{
-	nh_list_list_char* parts = nh_list_list_char_create();
-	nh_list_char* part = nh_list_char_create();
-	nh_list_list_char_append(parts, part);
-
-	char c;
-	size_t i = 0;
-	while ((c = source[i])) {
-		if (c == delim) {
-			part = nh_list_char_create();
-			nh_list_list_char_append(parts, part);
-		} else {
-			nh_list_char_append(part, c);
-		}
-
-		i++;
-	}
-
-	return parts;
-}
-
-void nh_list_list_char_destroy_from_split(nh_list_list_char* list)
-{
-	for (size_t i = 0; i < list->length; i++) {
-		nh_list_char_destroy(nh_list_list_char_get(list, i));
-	}
-	nh_list_list_char_destroy(list);
-}
+NH_LIST_LIST_CHAR(nh_list_list_char)
