@@ -1,7 +1,7 @@
-#include <stdio.h>
-#include <stdint.h>
-#include <map-view-str.h>
 #include "./_common.h"
+#include <map-view-str.h>
+#include <stdint.h>
+#include <stdio.h>
 
 NH_MAP_VIEW_ISTR(nh_map_view_istr_int32, int32_t, -1)
 

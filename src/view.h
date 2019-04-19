@@ -1,12 +1,12 @@
 #pragma once
 
-#include <stdlib.h>
-#include <stddef.h>
-#include <stdbool.h>
-#include <string.h>
 #include "./util.h"
+#include <stdbool.h>
+#include <stddef.h>
+#include <stdlib.h>
+#include <string.h>
 
-#define NH_VIEW(name, elem_type)                                         \
+#define NH_VIEW(name, elem_type)                                               \
 	typedef struct {                                                       \
 		size_t start;                                                  \
 		size_t end;                                                    \

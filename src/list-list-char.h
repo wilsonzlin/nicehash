@@ -1,8 +1,8 @@
 #pragma once
 
-#include <string.h>
-#include "./list.h"
 #include "./list-char.h"
+#include "./list.h"
+#include <string.h>
 
 NH_LIST(nh_list_list_char, nh_list_char*, nh_list_char*, NULL);
 

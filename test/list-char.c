@@ -1,11 +1,11 @@
-#include <stdio.h>
 #include <stdint.h>
+#include <stdio.h>
 #include <string.h>
 
 #include <sys/random.h>
 
-#include <list-char.h>
 #include "./_common.h"
+#include <list-char.h>
 
 static char* generate_random_data(size_t bytes)
 {

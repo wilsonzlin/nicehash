@@ -1,7 +1,5 @@
 # Linux kernel style
 BasedOnStyle: LLVM
-IndentWidth: 2
-UseTab: Never
 AlignAfterOpenBracket: true
 AlignEscapedNewlinesLeft: false
 AlignTrailingComments: true
@@ -16,10 +14,12 @@ BreakStringLiterals: false
 ContinuationIndentWidth: 8
 IndentCaseLabels: false
 MaxEmptyLinesToKeep: 2
-SortIncludes: false
+SortIncludes: true
 
 # Custom
+ColumnLimit: 150
 DerivePointerAlignment: false
+IndentWidth: 2
 PointerAlignment: Left
 SpaceAfterCStyleCast: true
-ColumnLimit: 150
+UseTab: Never

@@ -1,6 +1,6 @@
+#include "./_common.h"
 #include <stdio.h>
 #include <view-str.h>
-#include "./_common.h"
 
 int main(void)
 {

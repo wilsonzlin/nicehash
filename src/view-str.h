@@ -1,12 +1,11 @@
 #pragma once
 
-#include <strings.h>
 #include "../lib/khash.h"
 #include "./util.h"
 #include "./view.h"
+#include <strings.h>
 
-#define NH_VIEW_STR(name) \
-	NH_VIEW(name, char)
+#define NH_VIEW_STR(name) NH_VIEW(name, char)
 
 NH_VIEW_STR(nh_view_str)
 

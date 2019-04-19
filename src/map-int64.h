@@ -1,7 +1,7 @@
 #pragma once
 
-#include <stdint.h>
 #include "./map.h"
+#include <stdint.h>
 
 /**
  * Declare structs and functions for a specific Map<int64_t, ?>.

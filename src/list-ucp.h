@@ -1,8 +1,8 @@
 #pragma once
 
+#include "./list.h"
 #include <stdint.h>
 #include <string.h>
-#include "./list.h"
 
 NH_LIST(nh_list_ucp, int32_t, int32_t, -1)
 

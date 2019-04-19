@@ -1,9 +1,9 @@
 #pragma once
 
 #include <limits.h>
-#include <stdlib.h>
 #include <stdbool.h>
 #include <stdint.h>
+#include <stdlib.h>
 #include <string.h>
 
 /**
@@ -33,7 +33,7 @@
 	/**                                                                    \
 	 * Allocate memory for and create a new bit field.                     \
 	 *                                                                     \
-	 * @return pointer to a heap-allocated bit field                      \
+	 * @return pointer to a heap-allocated bit field                       \
 	 */                                                                    \
 	name* name##_create(void)                                              \
 	{                                                                      \

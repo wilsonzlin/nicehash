@@ -1,6 +1,6 @@
-#include <stdio.h>
-#include <set-view-str.h>
 #include "./_common.h"
+#include <set-view-str.h>
+#include <stdio.h>
 
 int main(void)
 {

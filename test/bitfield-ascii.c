@@ -1,6 +1,6 @@
-#include <stdio.h>
-#include <bitfield-ascii.h>
 #include "./_common.h"
+#include <bitfield-ascii.h>
+#include <stdio.h>
 
 int main(void)
 {

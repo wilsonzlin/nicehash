@@ -1,6 +1,6 @@
-#include <stdio.h>
-#include <set-int32.h>
 #include "./_common.h"
+#include <set-int32.h>
+#include <stdio.h>
 
 int main(void)
 {
