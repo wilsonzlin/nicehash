@@ -7,56 +7,58 @@
  * Internal macro. Declare structs and functions for a specific Map<View<char>,
  * ?>, and helper functions for using char arrays as keys directly.
  *
+ * @param key_name name of the key type
  * @param value_type value type
  * @param value_name name of the value type
  * @param default_value expression evaluated when a default value is needed
  * @param fn_hash macro or function that generates a hash when called with a key
  * @param fn_equals macro or function that checks whether two keys are equal
  */
-#define _NH_MAP_VIEW_STR_IMPL(value_type, value_name, default_value, fn_hash,  \
-			      fn_equals)                                       \
+#define _NH_MAP_VIEW_STR_IMPL(key_name, value_type, value_name, default_value, \
+			      fn_hash, fn_equals)                              \
 	NH_MAP(nh_view_str*, view_str, value_type, value_name, default_value,  \
 	       fn_hash, fn_equals)                                             \
                                                                                \
-	value_type nh_map_view_str_##value_name##_get_whole_array(             \
-		nh_map_view_str_##value_name* map, char* array,                \
+	value_type nh_map_##key_name##_##value_name##_get_whole_array(         \
+		nh_map_##key_name##_##value_name* map, char* array,            \
 		size_t array_length)                                           \
 	{                                                                      \
-		return nh_map_view_str_##value_name##_get(                     \
+		return nh_map_##key_name##_##value_name##_get(                 \
 			map, nh_view_str_of_whole_array(array, array_length)); \
 	}                                                                      \
                                                                                \
-	value_type nh_map_view_str_##value_name##_get_or_default_whole_array(  \
-		nh_map_view_str_##value_name* map, char* array,                \
-		size_t array_length, value_type d)                             \
+	value_type                                                             \
+		nh_map_##key_name##_##value_name##_get_or_default_whole_array( \
+			nh_map_##key_name##_##value_name* map, char* array,    \
+			size_t array_length, value_type d)                     \
 	{                                                                      \
-		return nh_map_view_str_##value_name##_get_or_default(          \
+		return nh_map_##key_name##_##value_name##_get_or_default(      \
 			map, nh_view_str_of_whole_array(array, array_length),  \
 			d);                                                    \
 	}                                                                      \
                                                                                \
-	void nh_map_view_str_##value_name##_set_whole_array(                   \
-		nh_map_view_str_##value_name* map, char* array,                \
+	void nh_map_##key_name##_##value_name##_set_whole_array(               \
+		nh_map_##key_name##_##value_name* map, char* array,            \
 		size_t array_length, value_type v)                             \
 	{                                                                      \
-		nh_map_view_str_##value_name##_set(                            \
+		nh_map_##key_name##_##value_name##_set(                        \
 			map, nh_view_str_of_whole_array(array, array_length),  \
 			v);                                                    \
 	}                                                                      \
                                                                                \
-	bool nh_map_view_str_##value_name##_has_whole_array(                   \
-		nh_map_view_str_##value_name* map, char* array,                \
+	bool nh_map_##key_name##_##value_name##_has_whole_array(               \
+		nh_map_##key_name##_##value_name* map, char* array,            \
 		size_t array_length)                                           \
 	{                                                                      \
-		return nh_map_view_str_##value_name##_has(                     \
+		return nh_map_##key_name##_##value_name##_has(                 \
 			map, nh_view_str_of_whole_array(array, array_length)); \
 	}                                                                      \
                                                                                \
-	bool nh_map_view_str_##value_name##_delete_whole_array(                \
-		nh_map_view_str_##value_name* map, char* array,                \
+	bool nh_map_##key_name##_##value_name##_delete_whole_array(            \
+		nh_map_##key_name##_##value_name* map, char* array,            \
 		size_t array_length)                                           \
 	{                                                                      \
-		return nh_map_view_str_##value_name##_delete(                  \
+		return nh_map_##key_name##_##value_name##_delete(              \
 			map, nh_view_str_of_whole_array(array, array_length)); \
 	}
 
@@ -69,7 +71,7 @@
  * @param default_value expression evaluated when a default value is needed
  */
 #define NH_MAP_VIEW_STR(value_type, value_name, default_value)                 \
-	_NH_MAP_VIEW_STR_IMPL(value_type, value_name, default_value,           \
+	_NH_MAP_VIEW_STR_IMPL(view_str, value_type, value_name, default_value, \
 			      nh_view_str_hash, nh_view_str_equals)
 
 /**
@@ -145,8 +147,9 @@
  * @param default_value expression evaluated when a default value is needed
  */
 #define NH_MAP_VIEW_ISTR(value_type, value_name, default_value)                \
-	_NH_MAP_VIEW_STR_IMPL(value_type, value_name, default_value,           \
-			      nh_view_str_hash_i, nh_view_str_equals_i)
+	_NH_MAP_VIEW_STR_IMPL(view_istr, value_type, value_name,               \
+			      default_value, nh_view_str_hash_i,               \
+			      nh_view_str_equals_i)
 
 /**
  * Helper macro to get from a specific case-insensitive Map<View<char>, ?> using
