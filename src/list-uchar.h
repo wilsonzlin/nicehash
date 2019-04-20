@@ -5,9 +5,14 @@
 #include <stdint.h>
 #include <string.h>
 
-#define NH_LIST_UCHAR(name)                                                    \
-	NH_LIST(name, int32_t, -1)                                             \
-	NH_LIST_DEFAULT_COMPARE(name, int32_t)                                 \
+#define NH_LIST_UCHAR_PROTO(name)                                              \
+	NH_LIST_PROTO(name, int32_t)                                           \
+                                                                               \
+	int name##_compare_char_array(name* a, char* b);
+
+#define NH_LIST_UCHAR_IMPL(name)                                               \
+	NH_LIST_IMPL(name, int32_t, -1)                                        \
+	NH_LIST_DEFAULT_COMPARE_IMPL(name, int32_t)                            \
                                                                                \
 	int name##_compare_char_array(name* a, char* b)                        \
 	{                                                                      \
@@ -31,4 +36,4 @@
 		}                                                              \
 	}
 
-NH_LIST_UCHAR(nh_list_uchar)
+NH_LIST_UCHAR_PROTO(nh_list_uchar)

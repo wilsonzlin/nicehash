@@ -4,7 +4,8 @@
 #include <stdint.h>
 #include <stdio.h>
 
-NH_MAP_STR(nh_map_str_set_str, nh_set_str*, NULL)
+NH_MAP_STR_PROTO(nh_map_str_set_str, nh_set_str*)
+NH_MAP_STR_IMPL(nh_map_str_set_str, nh_set_str*, NULL)
 
 int main(void)
 {

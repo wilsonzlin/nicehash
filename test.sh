@@ -9,7 +9,7 @@ for t in *.c; do
 
   echo "Running test $t..."
   tmp="$(mktemp)"
-  gcc --std=c11 -Wall -Wextra -Werror -Wno-type-limits -O0 -g -I../src -o "$tmp" "$t"
+  gcc --std=c11 -Wall -Wextra -Werror -Wno-type-limits -O0 -g -I../src -o "$tmp" "$t" ../src/*.c
   if [ $? -ne 0 ]; then
     echo "Compiling $t failed"
     exit 2

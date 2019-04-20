@@ -34,10 +34,21 @@
                                                                                \
 	return 0;
 
-#define NH_LIST_CHAR(name)                                                     \
-	NH_LIST(name, char, '\0')                                              \
+#define NH_LIST_CHAR_PROTO(name)                                               \
+	NH_LIST_PROTO(name, char)                                              \
                                                                                \
-	NH_LIST_DEFAULT_COMPARE(name, char)                                    \
+	int name##_compare_array(name* a, char* b);                            \
+                                                                               \
+	bool name##_equal_array(name* a, char* b);                             \
+                                                                               \
+	size_t name##_add_left_utf_8(name* list, uint32_t code_point);         \
+                                                                               \
+	size_t name##_add_right_utf_8(name* list, uint32_t code_point);
+
+#define NH_LIST_CHAR_IMPL(name)                                                \
+	NH_LIST_IMPL(name, char, '\0')                                         \
+                                                                               \
+	NH_LIST_DEFAULT_COMPARE_IMPL(name, char)                               \
                                                                                \
 	int name##_compare_array(name* a, char* b)                             \
 	{                                                                      \
@@ -61,4 +72,4 @@
 					     code_point);                      \
 	}
 
-NH_LIST_CHAR(nh_list_char)
+NH_LIST_CHAR_PROTO(nh_list_char)

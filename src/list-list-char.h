@@ -4,8 +4,15 @@
 #include "./list.h"
 #include <string.h>
 
-#define NH_LIST_LIST_CHAR(name)                                                \
-	NH_LIST(name, nh_list_char*, NULL);                                    \
+#define NH_LIST_LIST_CHAR_PROTO(name)                                          \
+	NH_LIST_PROTO(name, nh_list_char*);                                    \
+                                                                               \
+	name* name##_create_from_split(char* source, char delim);              \
+                                                                               \
+	void name##_destroy_from_split(name* list);
+
+#define NH_LIST_LIST_CHAR_IMPL(name)                                           \
+	NH_LIST_IMPL(name, nh_list_char*, NULL);                               \
                                                                                \
 	int name##_compare(name* a, name* b)                                   \
 	{                                                                      \
@@ -34,16 +41,16 @@
 	{                                                                      \
 		name* parts = name##_create();                                 \
 		nh_list_char* part = nh_list_char_create();                    \
-		name##_append(parts, part);                                    \
+		name##_add_right(parts, part);                                 \
                                                                                \
 		char c;                                                        \
 		size_t i = 0;                                                  \
 		while ((c = source[i])) {                                      \
 			if (c == delim) {                                      \
 				part = nh_list_char_create();                  \
-				name##_append(parts, part);                    \
+				name##_add_right(parts, part);                 \
 			} else {                                               \
-				nh_list_char_append(part, c);                  \
+				nh_list_char_add_right(part, c);               \
 			}                                                      \
                                                                                \
 			i++;                                                   \
@@ -60,4 +67,4 @@
 		name##_destroy(list);                                          \
 	}
 
-NH_LIST_LIST_CHAR(nh_list_list_char)
+NH_LIST_LIST_CHAR_PROTO(nh_list_list_char)

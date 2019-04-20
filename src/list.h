@@ -11,17 +11,17 @@
 
 /**
  * Implement the comparison function for a specific list, satisifying the
- * prototype declared by {@link NH_LIST}. The function compares the lengths of
- * both lists. If both lists have the same length, `memcmp` is used to compare
- * the bytes directly.
+ * prototype declared by {@link NH_LIST_PROTO}. The function compares the
+ * lengths of both lists. If both lists have the same length, `memcmp` is used
+ * to compare the bytes directly.
  *
  * @param name name of the specific list type
  * @param elem_type list's element type
  */
-#define NH_LIST_DEFAULT_COMPARE(name, elem_type)                               \
+#define NH_LIST_DEFAULT_COMPARE_IMPL(name, elem_type)                          \
 	int name##_compare(name* a, name* b)                                   \
 	{                                                                      \
-		int len_cmp = nh_util_compare_sizes(a->length, b->length);     \
+		int len_cmp = nh_util_compare_integers(a->length, b->length);  \
 		if (len_cmp != 0)                                              \
 			return len_cmp;                                        \
 		return memcmp(name##_underlying(a), name##_underlying(b),      \
@@ -38,18 +38,10 @@
  * memory is allocated to create more. The underlying storage is one contiguous
  * array, despite seeming to have two logical sides.
  *
- * A comparison function prototype `{name}_compare` is declared; it will need to
- * be implemented. It takes two specific lists and returns an integer less than,
- * equal to, or greater than zero if the first list is found, respectively, to
- * be less than, equal to, or greater than the second list. {@link
- * NH_LIST_DEFAULT_COMPARE} can be used to implement such a function that uses
- * `memcmp`.
- *
  * @param name name to use for the type to be declared
  * @param elem_type element type
- * @param invalid_value expression evaluated representing out of range indices
  */
-#define NH_LIST(name, elem_type, invalid_value)                                \
+#define NH_LIST_PROTO(name, elem_type)                                         \
 	typedef struct {                                                       \
 		elem_type* data;                                               \
 		size_t head;                                                   \
@@ -59,6 +51,66 @@
 		size_t size_right;                                             \
 	} name;                                                                \
                                                                                \
+	name* name##_create_of_size(size_t initial_size_left,                  \
+				    size_t initial_size_right);                \
+                                                                               \
+	name* name##_create(void);                                             \
+                                                                               \
+	void name##_destroy(name* list);                                       \
+                                                                               \
+	void name##_destroy_shallow(name* list);                               \
+                                                                               \
+	elem_type* name##_underlying(name* list);                              \
+                                                                               \
+	elem_type* name##_underlying_copy(name* list);                         \
+                                                                               \
+	bool name##_valid_index(name* list, size_t idx);                       \
+                                                                               \
+	elem_type name##_get(name* list, size_t idx);                          \
+                                                                               \
+	elem_type name##_first(name* list);                                    \
+                                                                               \
+	elem_type name##_last(name* list);                                     \
+                                                                               \
+	bool name##_is_empty(name* list);                                      \
+                                                                               \
+	void name##_set(name* list, size_t idx, elem_type c);                  \
+                                                                               \
+	void name##_clear(name* list);                                         \
+                                                                               \
+	void name##_size_ensure_left(name* list, size_t amount);               \
+                                                                               \
+	void name##_size_ensure_right(name* list, size_t amount);              \
+                                                                               \
+	void name##_add_right(name* list, elem_type tail);                     \
+                                                                               \
+	void name##_add_all_right_array(name* list, elem_type* ext,            \
+					size_t ext_len);                       \
+                                                                               \
+	void name##_add_all_right_list(name* list, name* ext);                 \
+                                                                               \
+	elem_type name##_remove_left(name* list);                              \
+                                                                               \
+	void name##_add_left(name* list, elem_type head);                      \
+                                                                               \
+	elem_type name##_remove_right(name* list);                             \
+                                                                               \
+	int name##_compare(name* a, name* b);                                  \
+                                                                               \
+	bool name##_equal(name* a, name* b);
+
+/**
+ * Implement functions for a specific List<?>.
+ *
+ * This does not implement `{name}_compare`. {@link
+ * NH_LIST_DEFAULT_COMPARE_IMPL} can be used to implement such a function that
+ * uses `memcmp`.
+ *
+ * @param name name of the declared type
+ * @param elem_type element type
+ * @param invalid_value expression evaluated representing out of range indices
+ */
+#define NH_LIST_IMPL(name, elem_type, invalid_value)                           \
 	name* name##_create_of_size(size_t initial_size_left,                  \
 				    size_t initial_size_right)                 \
 	{                                                                      \
@@ -302,8 +354,6 @@
                                                                                \
 		return l;                                                      \
 	}                                                                      \
-                                                                               \
-	int name##_compare(name* a, name* b);                                  \
                                                                                \
 	bool name##_equal(name* a, name* b)                                    \
 	{                                                                      \

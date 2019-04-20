@@ -3,7 +3,8 @@
 #include <stdint.h>
 #include <stdio.h>
 
-NH_MAP_VIEW_STR(nh_map_view_str_int32, int32_t, -1)
+NH_MAP_VIEW_STR_PROTO(nh_map_view_str_int32, int32_t)
+NH_MAP_VIEW_STR_IMPL(nh_map_view_str_int32, int32_t, -1)
 
 int main(void)
 {
