@@ -7,6 +7,23 @@
 #include <string.h>
 
 /**
+ * Helper macro for iterating a view using a for loop.
+ * Generates a for loop statement declaring variables representing the index,
+ * offset, and length during iteration.
+ *
+ * @param view view to iterate
+ * @param var_index name for the variable representing the index, which is the
+ * position within the view
+ * @param var_offset name for the variable representing the offset, which is the
+ * position within the underlying array
+ * @param var_length name for the variable representing the length of the view
+ */
+#define nh_view_for(view, var_index, var_offset, var_length)                   \
+	for (size_t var_index = 0, var_offset = (view)->start,                 \
+		    var_length = (view)->length;                               \
+	     var_index < var_length; var_index++, var_offset++)
+
+/**
  * Declare structs and functions for a specific View<?>.
  * A view represents the subarray [`start`, `start` + `length`) of `array`.
  * The subarray is a pointer and not a copy, so changes to elements in the
