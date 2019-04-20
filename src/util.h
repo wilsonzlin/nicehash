@@ -21,6 +21,18 @@ int nh_util_compare_integers(int a, int b)
 }
 
 /**
+ * Compare the value of a size_t value to another.
+ *
+ * @param a size_t to compare against
+ * @param b size_t to compare to
+ * @return -1 if `a < b`, 0 if `a == b`, 1, if `a > b`
+ */
+int nh_util_compare_sizes(size_t a, size_t b)
+{
+	return (a > b) - (a < b);
+}
+
+/**
  * Get the lowercase version of an ASCII character, if available.
  *
  * @param c character to lowercase

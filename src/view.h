@@ -6,51 +6,40 @@
 #include <stdlib.h>
 #include <string.h>
 
+/**
+ * Declare structs and functions for a specific View<?>.
+ * A view represents the subarray [`start`, `start` + `length`) of `array`.
+ * The subarray is a pointer and not a copy, so changes to elements in the
+ * subarray will affect the original array.
+ *
+ * @param name name to use for the type to be declared
+ * @param elem_type array element type
+ */
 #define NH_VIEW(name, elem_type)                                               \
 	typedef struct {                                                       \
 		size_t start;                                                  \
-		size_t end;                                                    \
 		size_t length;                                                 \
 		elem_type* array;                                              \
 	} name;                                                                \
                                                                                \
-	bool name##_is_invalid(name* view)                                     \
-	{                                                                      \
-		return view->array == NULL || view->end < view->start;         \
-	}                                                                      \
-                                                                               \
-	static void name##_update_length(name* view)                           \
-	{                                                                      \
-		/* Avoid overflow by adding first. */                          \
-		view->length = name##_is_invalid(view)                         \
-				       ? 0                                     \
-				       : view->end + 1 - view->start;          \
-	}                                                                      \
-                                                                               \
 	void name##_init(name* view, elem_type* array, size_t start,           \
-			 size_t end)                                           \
+			 size_t length)                                        \
 	{                                                                      \
 		view->array = array;                                           \
 		view->start = start;                                           \
-		view->end = end;                                               \
-		name##_update_length(view);                                    \
+		view->length = length;                                         \
 	}                                                                      \
                                                                                \
-	name* name##_create(elem_type* array, size_t start, size_t end)        \
+	name* name##_create(elem_type* array, size_t start, size_t length)     \
 	{                                                                      \
 		name* view = malloc(sizeof(name));                             \
-		name##_init(view, array, start, end);                          \
+		name##_init(view, array, start, length);                       \
 		return view;                                                   \
-	}                                                                      \
-                                                                               \
-	name* name##_create_invalid()                                          \
-	{                                                                      \
-		return name##_create(NULL, 1, 0);                              \
 	}                                                                      \
                                                                                \
 	name* name##_of_whole_array(elem_type* array, size_t length)           \
 	{                                                                      \
-		return name##_create(array, 0, length - 1);                    \
+		return name##_create(array, 0, length);                        \
 	}                                                                      \
                                                                                \
 	void name##_destroy(name* view)                                        \
@@ -66,20 +55,18 @@
 	void name##_set_start(name* view, size_t start)                        \
 	{                                                                      \
 		view->start = start;                                           \
-		name##_update_length(view);                                    \
 	}                                                                      \
                                                                                \
-	void name##_set_end(name* view, size_t end)                            \
+	void name##_set_length(name* view, size_t length)                      \
 	{                                                                      \
-		view->end = end;                                               \
-		name##_update_length(view);                                    \
+		view->length = length;                                         \
 	}                                                                      \
                                                                                \
 	int name##_compare_array(name* view, elem_type* other,                 \
 				 size_t other_length)                          \
 	{                                                                      \
 		int len_cmp =                                                  \
-			nh_util_compare_integers(view->length, other_length);  \
+			nh_util_compare_sizes(view->length, other_length);     \
 		if (len_cmp != 0) {                                            \
 			return len_cmp;                                        \
 		}                                                              \

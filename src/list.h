@@ -21,7 +21,7 @@
 #define NH_LIST_DEFAULT_COMPARE(name, elem_type)                               \
 	int name##_compare(name* a, name* b)                                   \
 	{                                                                      \
-		int len_cmp = nh_util_compare_integers(a->length, b->length);  \
+		int len_cmp = nh_util_compare_sizes(a->length, b->length);     \
 		if (len_cmp != 0)                                              \
 			return len_cmp;                                        \
 		return memcmp(name##_underlying(a), name##_underlying(b),      \
@@ -30,6 +30,13 @@
 
 /**
  * Declare structs and functions for a specific List<?>.
+ * A list can add and remove elements from both ends in amortised constant time,
+ * and reallocates memory as necessary to fit all elements.
+ *
+ * There is a left capacity and right capacity. Adding elements to a side
+ * consumes capacity from that side; if there is no capacity remaining, new
+ * memory is allocated to create more. The underlying storage is one contiguous
+ * array, despite seeming to have two logical sides.
  *
  * A comparison function prototype `{name}_compare` is declared; it will need to
  * be implemented. It takes two specific lists and returns an integer less than,
