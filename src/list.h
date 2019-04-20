@@ -108,12 +108,8 @@
 		return idx < list->length;                                     \
 	}                                                                      \
                                                                                \
-	elem_type name##_get(name* list, int64_t idx)                          \
+	elem_type name##_get(name* list, size_t idx)                           \
 	{                                                                      \
-		if (idx < 0) {                                                 \
-			idx = list->length + idx;                              \
-		}                                                              \
-                                                                               \
 		if (!name##_valid_index(list, idx)) {                          \
 			return invalid_value;                                  \
 		}                                                              \

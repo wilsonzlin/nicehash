@@ -3,6 +3,7 @@
 #include "./util.h"
 #include <stdbool.h>
 #include <stddef.h>
+#include <stdint.h>
 #include <stdlib.h>
 #include <string.h>
 
@@ -31,8 +32,9 @@
  *
  * @param name name to use for the type to be declared
  * @param elem_type array element type
+ * @param invalid_value expression evaluated representing out of range indices
  */
-#define NH_VIEW(name, elem_type)                                               \
+#define NH_VIEW(name, elem_type, invalid_value)                                \
 	typedef struct {                                                       \
 		size_t start;                                                  \
 		size_t length;                                                 \
@@ -64,9 +66,23 @@
 		free(view);                                                    \
 	}                                                                      \
                                                                                \
+	bool name##_valid_index(name* view, size_t index)                      \
+	{                                                                      \
+		return index < view->length;                                   \
+	}                                                                      \
+                                                                               \
 	size_t name##_length(name* view)                                       \
 	{                                                                      \
 		return view->length;                                           \
+	}                                                                      \
+                                                                               \
+	elem_type name##_get(name* view, size_t index)                         \
+	{                                                                      \
+		if (!name##_valid_index(view, index)) {                        \
+			return invalid_value;                                  \
+		}                                                              \
+                                                                               \
+		return view->array[view->start + index];                       \
 	}                                                                      \
                                                                                \
 	void name##_set_start(name* view, size_t start)                        \
