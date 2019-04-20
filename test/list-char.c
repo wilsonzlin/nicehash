@@ -69,15 +69,15 @@ int main(void)
 
 	size_t utf_8_bytes_added = nh_list_char_add_right_utf_8(list, 0x10348);
 	expect(utf_8_bytes_added == 4, "Add UTF-8");
-	expect((unsigned char) nh_list_char_get(list, -1) == 0x88,
+	expect((unsigned char) nh_list_char_get(list, list->length - 1) == 0x88,
 	       "Fourth byte of UTF-8");
-	expect((unsigned char) nh_list_char_get(list, -2) == 0x8D,
+	expect((unsigned char) nh_list_char_get(list, list->length - 2) == 0x8D,
 	       "Third byte of UTF-8");
-	expect((unsigned char) nh_list_char_get(list, -3) == 0x90,
+	expect((unsigned char) nh_list_char_get(list, list->length - 3) == 0x90,
 	       "Second byte of UTF-8");
-	expect((unsigned char) nh_list_char_get(list, -4) == 0xF0,
+	expect((unsigned char) nh_list_char_get(list, list->length - 4) == 0xF0,
 	       "First byte of UTF-8");
-	expect(nh_list_char_get(list, -5) == 'z',
+	expect(nh_list_char_get(list, list->length - 5) == 'z',
 	       "List contains expected post-UTF-8 data");
 
 	nh_list_char_clear(list);
