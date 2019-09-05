@@ -10,7 +10,7 @@
 #define _NH_LIST_GROWTH_RATE 1.5
 
 /**
- * Implement the comparison function for a specific list, satisifying the
+ * Implement the comparison function for a specific list, satisfying the
  * prototype declared by {@link NH_LIST_PROTO}. The function compares the
  * lengths of both lists. If both lists have the same length, `memcmp` is used
  * to compare the bytes directly.
